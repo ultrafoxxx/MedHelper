@@ -1,16 +1,23 @@
-package com.holzhausen.MedHelper.model;
+package com.holzhausen.MedHelper.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "user")
 public class User {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "user_id", nullable = false)
     private int id;
 
+    @NotEmpty(message = "Pole nie może być puste")
+    @Column(name = "login", unique = true, nullable = false, length = 30)
     private String login;
 
+    @NotEmpty(message = "Pole nie może być puste")
+    @Column(name = "password", nullable = false)
     private String password;
 
     public int getId() {

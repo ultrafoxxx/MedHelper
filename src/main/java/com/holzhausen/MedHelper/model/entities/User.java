@@ -1,5 +1,6 @@
 package com.holzhausen.MedHelper.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
@@ -14,6 +15,10 @@ import java.io.Serializable;
 @DiscriminatorColumn(name = "rola", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("User")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "role")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Lekarz.class, name = "Lekarz"),
+        @JsonSubTypes.Type(value = Pacjent.class, name = "Pacjent")
+})
 public abstract class User implements Serializable {
 
     @Id

@@ -63,6 +63,13 @@ public class Wizyta {
             foreignKey = @ForeignKey(name = "wizyta_gabinetFK"))
     private GabinetLekarski gabinetLekarski;
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "unikalnyKod",
+            resolver = EntityResolver.class, scope = Zwolnienie.class)
+    @JsonIdentityReference(alwaysAsId = true)
+    @OneToOne(mappedBy="wizyta", targetEntity= Zwolnienie.class, fetch= FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})
+    private Zwolnienie zwolnienie;
+
     public int getId() {
         return id;
     }

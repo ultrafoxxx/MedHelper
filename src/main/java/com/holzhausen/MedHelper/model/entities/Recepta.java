@@ -1,15 +1,15 @@
 package com.holzhausen.MedHelper.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.holzhausen.MedHelper.util.EntityResolver;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Proxy(lazy = false)
@@ -33,4 +33,41 @@ public class Recepta {
             foreignKey = @ForeignKey(name = "recepta_wizytaFK"))
     private Wizyta wizyta;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "recepta", targetEntity = ReceptaLek.class)
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})
+    @LazyCollection(LazyCollectionOption.TRUE)
+    private List<ReceptaLek> receptaLek;
+
+    public String getUnikalnyKod() {
+        return unikalnyKod;
+    }
+
+    public void setUnikalnyKod(String unikalnyKod) {
+        this.unikalnyKod = unikalnyKod;
+    }
+
+    public Date getCzasRealizacji() {
+        return czasRealizacji;
+    }
+
+    public void setCzasRealizacji(Date czasRealizacji) {
+        this.czasRealizacji = czasRealizacji;
+    }
+
+    public Wizyta getWizyta() {
+        return wizyta;
+    }
+
+    public void setWizyta(Wizyta wizyta) {
+        this.wizyta = wizyta;
+    }
+
+    public List<ReceptaLek> getReceptaLek() {
+        return receptaLek;
+    }
+
+    public void setReceptaLek(List<ReceptaLek> receptaLek) {
+        this.receptaLek = receptaLek;
+    }
 }

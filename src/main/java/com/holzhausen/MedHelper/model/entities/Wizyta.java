@@ -53,6 +53,16 @@ public class Wizyta {
     @LazyCollection(LazyCollectionOption.TRUE)
     private List<Recepta> recepty;
 
+    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",
+            resolver = EntityResolver.class, scope = GabinetLekarski.class)
+    @JsonIdentityReference(alwaysAsId = true)
+    @ManyToOne(targetEntity = GabinetLekarski.class, fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.LOCK})
+    @JoinColumns(value = {@JoinColumn(name = "GabinetLekarskiId", referencedColumnName = "id", nullable = false)},
+            foreignKey = @ForeignKey(name = "wizyta_gabinetFK"))
+    private GabinetLekarski gabinetLekarski;
+
     public int getId() {
         return id;
     }
@@ -99,5 +109,13 @@ public class Wizyta {
 
     public void setRecepty(List<Recepta> recepty) {
         this.recepty = recepty;
+    }
+
+    public GabinetLekarski getGabinetLekarski() {
+        return gabinetLekarski;
+    }
+
+    public void setGabinetLekarski(GabinetLekarski gabinetLekarski) {
+        this.gabinetLekarski = gabinetLekarski;
     }
 }

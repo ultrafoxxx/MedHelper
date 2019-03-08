@@ -22,4 +22,11 @@ public class Lekarz extends User implements Serializable {
     @LazyCollection(LazyCollectionOption.TRUE)
     private List<Wizyta> wizyty;
 
+    public List<Wizyta> getWizyty() {
+        return wizyty;
+    }
+
+    public void setWizyty(List<Wizyta> wizyty) {
+        this.wizyty = wizyty;
+    }
 }

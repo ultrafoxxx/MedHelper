@@ -46,7 +46,7 @@ public abstract class User implements Serializable {
     @NotEmpty(message = "Pole nie może być puste")
     private String imie;
 
-    @Column(name = "pesel", nullable = false)
+    @Column(name = "pesel", nullable = false, unique = true)
     @NotEmpty(message = "Pole nie może być puste")
     @Size(min = 11, max = 11, message = "Pole musi posiadać dokładnie 11 znaków")
     private String pesel;
@@ -56,7 +56,7 @@ public abstract class User implements Serializable {
     @Size(min = 9, max = 9, message = "Pole musi posiadać dokładnie 9 znaków")
     private String nrTelefonu;
 
-    @Column(name = "nrDowodu", nullable = false)
+    @Column(name = "nrDowodu", nullable = false, unique = true)
     @NotEmpty(message = "Pole nie może być puste")
     @Size(min = 6, max = 6, message = "Pole musi posiadać dokładnie 6 znaków")
     private String nrDowodu;

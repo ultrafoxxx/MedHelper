@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Proxy(lazy = false)
-@Table(name = "Wizyta")
+@Table(name = "ReceptaLek")
 public class ReceptaLek {
 
     @Id
@@ -26,9 +26,19 @@ public class ReceptaLek {
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne(targetEntity = Recepta.class, fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.LOCK})
-    @JoinColumns(value = {@JoinColumn(name = "receptaId", referencedColumnName = "UnikalnyKod", nullable = false)},
+    @JoinColumns(value = {@JoinColumn(name = "UnikalnyKod", referencedColumnName = "UnikalnyKod", nullable = false)},
             foreignKey = @ForeignKey(name = "receptalek_receptaFK"))
     private Recepta recepta;
+
+    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",
+            resolver = EntityResolver.class, scope = Lek.class)
+    @JsonIdentityReference(alwaysAsId = true)
+    @ManyToOne(targetEntity = Lek.class, fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.LOCK})
+    @JoinColumns(value = {@JoinColumn(name = "lekId", referencedColumnName = "id", nullable = false)},
+            foreignKey = @ForeignKey(name = "receptalek_lekFK"))
+    private Lek lek;
 
     public int getId() {
         return id;
@@ -44,5 +54,13 @@ public class ReceptaLek {
 
     public void setRecepta(Recepta recepta) {
         this.recepta = recepta;
+    }
+
+    public Lek getLek() {
+        return lek;
+    }
+
+    public void setLek(Lek lek) {
+        this.lek = lek;
     }
 }

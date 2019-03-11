@@ -17,7 +17,7 @@ import java.util.List;
 public class Recepta {
 
     @Id
-    @Column(name = "UnikalnyKod", nullable = false)
+    @Column(name = "UnikalnyKod", nullable = false, length = 40)
     private String unikalnyKod;
 
     @Column(name = "CzasRealizacji", nullable = false)

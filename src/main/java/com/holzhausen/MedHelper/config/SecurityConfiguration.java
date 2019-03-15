@@ -20,16 +20,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private DataSource dataSource;
 
-    @Value("$(spring.queries.users-query)")
     private String userQuery;
 
-    @Value("$(spring.queries.role-query)")
     private String roleQuery;
 
     @Autowired
     public SecurityConfiguration(BCryptPasswordEncoder passwordEncoder, DataSource dataSource) {
         this.passwordEncoder = passwordEncoder;
         this.dataSource = dataSource;
+        userQuery = "select email, password, czy_konto_potwierdzone from user where email=?";
+        roleQuery = "select email, rola from user where email=?";
     }
 
     @Override
@@ -53,10 +53,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         try {
             http.authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/login").permitAll()
+                    .antMatchers("/logowanie").permitAll()
                     .anyRequest().authenticated().and().csrf()
                     .disable().formLogin()
-                    .loginPage("/login").failureUrl("/login?error=true")
+                    .loginPage("/logowanie").failureUrl("/logowanie?error=true")
                     .defaultSuccessUrl("/")
                     .usernameParameter("email")
                     .passwordParameter("password")

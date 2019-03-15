@@ -40,6 +40,9 @@ public class ReceptaLek {
             foreignKey = @ForeignKey(name = "receptalek_lekFK"))
     private Lek lek;
 
+    @Column(name = "IloscDawek", nullable = false)
+    private int iloscDawek;
+
     public int getId() {
         return id;
     }

@@ -30,8 +30,6 @@ public class Lek {
     @Column(name = "forma", nullable = false)
     private Forma forma;
 
-    @Column(name = "IleOpakowan", nullable = false)
-    private int ileOpakowan;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "lek", targetEntity = ReceptaLek.class)
@@ -71,13 +69,6 @@ public class Lek {
         this.forma = forma;
     }
 
-    public int getIleOpakowan() {
-        return ileOpakowan;
-    }
-
-    public void setIleOpakowan(int ileOpakowan) {
-        this.ileOpakowan = ileOpakowan;
-    }
 
     public List<ReceptaLek> getReceptaLek() {
         return receptaLek;

@@ -15,7 +15,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
-<body>
+<body style="background-color: #CCFF99">
 <nav class="navbar navbar-expand-lg navbar-light bg-success">
     <a class="navbar-brand" th:href="@{/}">MedHelper</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -38,12 +38,12 @@
 </nav>
 
 <!-- As a heading -->
-<nav class="navbar sticky-top navbar-light bg-light">
+<nav class="navbar navbar-expand-lg background-color:#CCFF99">
     <span class="navbar-brand mb-0 h1 mx-auto">Witaj w serwisie MedHelper!</span>
 </nav>
 
 <div class="row">
-    <div class="col" style="margin-top: 30px;">
+    <div class="col-2" style="margin-top: 30px;">
         <div class="list-group sticky-top">
             <a class="list-group-item text-light bg-success">Menu</a>
             <a class="list-group-item list-group-item-action  border-success" href="#">Nasze placówki</a>
@@ -55,12 +55,13 @@
         </div>
     </div>
 
-    <div class="col-7">
+    <div class="col-9 mx-auto">
         <div class="card border-success" style="margin-top:30px;">
             <div class="card-header bg-success text-light border-success">Data publikacji: 16.03.2019r</div>
             <div class="card-body">
                 <h5 class="card-title border-success">Logowanie do serwisu</h5>
-                <p class="card-text">W dniu dzisiejszym do serwisu została dodana funkcja logowania. Zapraszamy do testowania.</p>
+                <p class="card-text">W dniu dzisiejszym do serwisu została dodana funkcja logowania. Zapraszamy do
+                    testowania.</p>
             </div>
             <div class="card-footer bg-transparent border-success">Zespół MedHelper</div>
         </div>
@@ -89,17 +90,14 @@
             <div class="card-header bg-success text-light border-success">Data publikacji: 1.03.2019r</div>
             <div class="card-body">
                 <h5 class="card-title border-success">Prace nad serwisem internetowym MedHelper rozpoczęte!</h5>
-                <p class="card-text">Miło jest nam poinformować, że prace nad serwisem MedHelper zostały rozpoczęte. W ciągu najbliższych kilku miesięcy strona będzie gotowa do użytku</p>
+                <p class="card-text">Miło jest nam poinformować, że prace nad serwisem MedHelper zostały rozpoczęte.
+                    W ciągu najbliższych kilku miesięcy strona będzie gotowa do użytku</p>
             </div>
             <div class="card-footer bg-transparent border-success">Zespół MedHelper</div>
         </div>
     </div>
-    <div class="col" style="position: relative; margin-top: 30px;">
-        <div class="sticky-top">
-            <img src="../static/pic1.jpg" height="200" width="300"/>
-            <img src="../static/pic2.jpg" height="177" width="300"/>
-            <img src="../static/pic3.jpg" height="200" width="300"/>
-        </div>
+    <div class="col">
+
     </div>
 </div>
 

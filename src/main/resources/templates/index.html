@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
 <head>
     <meta charset="UTF-8">
     <title>MedHelper</title>
@@ -12,7 +14,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
+
+<body style="background-color: #CCFF99">
 <nav class="navbar navbar-expand-lg navbar-light bg-success">
     <a class="navbar-brand" th:href="@{/}">MedHelper</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -24,15 +27,80 @@
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/logowanie}" sec:authorize="isAnonymous()">Logowanie<span class="sr-only">(current)</span></a>
-                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Wyloguj<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/logowanie}" sec:authorize="isAnonymous()">Logowanie<span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Wyloguj<span
+                            class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<h1 style="text-align: center; margin-top: 200px">MedHelper</h1>
+<!-- As a heading -->
+<nav class="navbar navbar-expand-lg background-color:#CCFF99">
+    <span class="navbar-brand mb-0 h1 mx-auto">Witaj w serwisie MedHelper!</span>
+</nav>
+
+<div class="row">
+    <div class="col-2" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
+            <a class="list-group-item text-light bg-success">Menu</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Nasze placówki</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 2</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 3</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 4</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 5</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
+        </div>
+    </div>
+
+    <div class="col-9 mx-auto">
+        <div class="card border-success" style="margin-top:30px;">
+            <div class="card-header bg-success text-light border-success">Data publikacji: 16.03.2019r</div>
+            <div class="card-body">
+                <h5 class="card-title border-success">Logowanie do serwisu</h5>
+                <p class="card-text">W dniu dzisiejszym do serwisu została dodana funkcja logowania. Zapraszamy do
+                    testowania.</p>
+            </div>
+            <div class="card-footer bg-transparent border-success">Zespół MedHelper</div>
+        </div>
+
+        <div class="card border-success" style="margin-top:30px;">
+            <div class="card-header bg-success text-light border-success">Data publikacji: 5.03.2019r</div>
+            <div class="card-body">
+                <h5 class="card-title border-success">Opóźnienie</h5>
+                <p class="card-text">W związku ze zmnianą wykonawcy projektu aplikacja MedHelper zostanie wdrożona z
+                    opóźnieniem. Za opóźnienie przepraszamy.</p>
+            </div>
+            <div class="card-footer bg-transparent border-success">Zespół MedHelper</div>
+        </div>
+
+        <div class="card border-success" style="margin-top:30px;">
+            <div class="card-header bg-success text-light border-success">Data publikacji: 5.03.2019r</div>
+            <div class="card-body">
+                <h5 class="card-title border-success">Opóźnienie</h5>
+                <p class="card-text">W związku ze zmnianą wykonawcy projektu aplikacja MedHelper zostanie wdrożona z
+                    opóźnieniem. Za opóźnienie przepraszamy.</p>
+            </div>
+            <div class="card-footer bg-transparent border-success">Zespół MedHelper</div>
+        </div>
+
+        <div class="card border-success" style="margin-top:30px;">
+            <div class="card-header bg-success text-light border-success">Data publikacji: 1.03.2019r</div>
+            <div class="card-body">
+                <h5 class="card-title border-success">Prace nad serwisem internetowym MedHelper rozpoczęte!</h5>
+                <p class="card-text">Miło jest nam poinformować, że prace nad serwisem MedHelper zostały rozpoczęte.
+                    W ciągu najbliższych kilku miesięcy strona będzie gotowa do użytku</p>
+            </div>
+            <div class="card-footer bg-transparent border-success">Zespół MedHelper</div>
+        </div>
+    </div>
+    <div class="col">
+
+    </div>
+</div>
+
 
 
 <!-- Optional JavaScript -->
@@ -47,4 +115,5 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

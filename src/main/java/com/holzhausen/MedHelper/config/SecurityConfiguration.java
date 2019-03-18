@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         try {
             http.authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/logowanie").permitAll()
+                    .antMatchers("/logowanie").anonymous()
                     .anyRequest().authenticated().and().csrf()
                     .disable().formLogin()
                     .loginPage("/logowanie").failureUrl("/logowanie?error=true")

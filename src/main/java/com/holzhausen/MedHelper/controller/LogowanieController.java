@@ -17,4 +17,7 @@ public class LogowanieController {
         view.setViewName("MedHelperLogowanie");
         return view;
     }
+
+
+
 }

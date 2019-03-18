@@ -10,70 +10,95 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>MedHelper logowanie</title>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-success">
-        <a class="navbar-brand" th:href="@{/}">MedHelper</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+<body style="background-color: #CCFF99">
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
+    <a class="navbar-brand" th:href="@{/}">MedHelper</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
 
-            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Logowanie<span class="sr-only">(current)</span></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="mx-auto" style="width: fit-content;">
-        <div class="card bg-light, border-success" style="width: 500px; position: relative; top: 100px;">
-            <h5 class="card-title, mx-auto">Logowanie</h5>
-            <form class="px-4 py-3" th:action="@{/logowanie}" method="post">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" class="email form-control" name="email" placeholder="email@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="password">Hasło</label>
-                    <input type="password" id="password"  class="password form-control" placeholder="Hasło" name="password">
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck" name="remember-me">
-                        <label class="form-check-label" for="dropdownCheck">
-                            Zapamiętaj mnie
-                        </label>
-                    </div>
-                </div>
-                <div align="center" th:if="${param.error}">
-                    <p style="font-size: 20px; color: #FF1C19;">Email or Password invalid, please verify</p>
-                </div>
-                <button type="submit" class="btn btn-success">Zaloguj</button>
-            </form>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Zapomniałeś hasła?</a>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Logowanie<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
         </div>
     </div>
+</nav>
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+<div class="row">
+    <div class="col-2" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
+            <a class="list-group-item text-light bg-success">Menu</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Nasze placówki</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 2</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 3</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 4</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Item 5</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
+        </div>
+    </div>
+    <div class="col-10 mx-auto">
+
+        <div class="mx-auto" style="width: fit-content;">
+            <div class="card bg-light, border-success" style="width: 700px; position: relative; top: 30px;">
+                <h5 class="card-title, mx-auto">Logowanie</h5>
+                <form class="px-4 py-3" th:action="@{/logowanie}" method="post">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="email form-control" name="email"
+                               placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Hasło</label>
+                        <input type="password" id="password" class="password form-control" placeholder="hasło"
+                               name="password">
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="dropdownCheck"
+                                           name="remember-me">
+                                    <label class="form-check-label" for="dropdownCheck">
+                                        Zapamiętaj mnie
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-success">Zaloguj</button>
+                        </div>
+                    </div>
+                    <div align="center" th:if="${param.error}">
+                        <p style="font-size: 20px; color: #FF1C19;">Email or Password invalid, please verify</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 </body>

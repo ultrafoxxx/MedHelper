@@ -42,7 +42,7 @@ xmlns:th="http://www.thymeleaf.org">
 </nav>
 
 <div class="row">
-    <div class="col-2" style="margin-top: 30px;">
+    <div class="col" style="margin-top: 30px;">
         <div class="list-group sticky-top">
             <a class="list-group-item text-light bg-success">Menu</a>
             <a class="list-group-item list-group-item-action  border-success" href="#">Nasze placówki</a>
@@ -54,7 +54,7 @@ xmlns:th="http://www.thymeleaf.org">
         </div>
     </div>
 
-    <div class="col-9 mx-auto">
+    <div class="col-7">
         <div class="card border-success" style="margin-top:30px;">
             <div class="card-header bg-success text-light border-success">Data publikacji: 16.03.2019r</div>
             <div class="card-body">
@@ -95,9 +95,12 @@ xmlns:th="http://www.thymeleaf.org">
             <div class="card-footer bg-transparent border-success">Zespół MedHelper</div>
         </div>
     </div>
-    <div class="col">
-
+    <div class="col" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
         <img th:src="@{/images/pic1.jpg}" height="200" width="300"/>
+        <img th:src="@{/images/pic2.jpg}" height="200" width="300"/>
+        <img th:src="@{/images/pic3.jpg}" height="200" width="300"/>
+        </div>
     </div>
 </div>
 

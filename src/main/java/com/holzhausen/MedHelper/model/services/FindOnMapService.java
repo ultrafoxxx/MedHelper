@@ -5,6 +5,7 @@ import com.holzhausen.MedHelper.model.repositories.PlacowkaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,15 +18,27 @@ public class FindOnMapService {
         this.repository = repository;
     }
 
-    public List<Placowka> getPlacesWithCityContaining(String place){
+    public List<String> getPlacesWithCityContaining(String place){
 
-        return repository.findDistinctByMiastoContaining(place);
+        List<Placowka> places = repository.findDistinctByMiastoContainingIgnoreCase(place);
+        List<String> cities = new ArrayList<>();
+        for(int i =0;i<places.size(); i++){
+            cities.add(places.get(i).getMiasto());
+        }
+
+        return cities;
 
     }
 
-    public List<Placowka> getPlacesWithCityAndAddressCotaining(String city, String address){
+    public List<String> getPlacesWithCityAndAddressCotaining(String city, String address){
 
-        return repository.findAllByMiastoAndAdresContaining(city, address);
+        List<Placowka> places = repository.findAllByMiastoAndAdresContainingIgnoreCase(city, address);
+        List<String> addresses = new ArrayList<>();
+        for(int i =0;i<places.size(); i++){
+            addresses.add(places.get(i).getAdres());
+        }
+
+        return addresses;
 
     }
 }

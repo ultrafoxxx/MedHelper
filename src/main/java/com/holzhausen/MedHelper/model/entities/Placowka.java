@@ -31,6 +31,9 @@ public class Placowka {
     @Column(name = "SzerGeo", nullable = false)
     private double szerGeo;
 
+    @Column(name = "telefon", nullable = false)
+    private String telefon;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "placowka", targetEntity = GabinetLekarski.class)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})
@@ -83,5 +86,13 @@ public class Placowka {
 
     public void setGabinetyLekarskie(List<GabinetLekarski> gabinetyLekarskie) {
         this.gabinetyLekarskie = gabinetyLekarskie;
+    }
+
+    public String getTelefon() {
+        return telefon;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
     }
 }

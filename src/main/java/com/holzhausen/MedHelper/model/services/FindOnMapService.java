@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FindOnMapService {
@@ -25,6 +26,7 @@ public class FindOnMapService {
         for(int i =0;i<places.size(); i++){
             cities.add(places.get(i).getMiasto());
         }
+        cities = cities.stream().distinct().collect(Collectors.toList());
 
         return cities;
 

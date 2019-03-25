@@ -33,7 +33,6 @@ public class FindOnMapController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("findOnMap");
         return modelAndView;
-
     }
 
     @GetMapping(value = "/getCities")

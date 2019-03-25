@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
-xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>MedHelper</title>
@@ -22,11 +22,6 @@ xmlns:th="http://www.thymeleaf.org">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" th:href="@{/map}">Przychodnie<span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
     </div>
     <div class="collapse navbar-collapse" id="navbarNav">
 
@@ -52,11 +47,8 @@ xmlns:th="http://www.thymeleaf.org">
     <div class="col" style="margin-top: 30px;">
         <div class="list-group sticky-top">
             <a class="list-group-item text-light bg-success">Menu</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Nasze placówki</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 2</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 3</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 4</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 5</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Przychodnie</a>
             <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
         </div>
     </div>
@@ -104,9 +96,9 @@ xmlns:th="http://www.thymeleaf.org">
     </div>
     <div class="col" style="margin-top: 30px;">
         <div class="list-group sticky-top">
-        <img th:src="@{/images/pic1.jpg}" height="200" width="300"/>
-        <img th:src="@{/images/pic2.jpg}" height="200" width="300"/>
-        <img th:src="@{/images/pic3.jpg}" height="200" width="300"/>
+            <img th:src="@{/images/pic1.jpg}" height="200" width="300"/>
+            <img th:src="@{/images/pic2.jpg}" height="200" width="300"/>
+            <img th:src="@{/images/pic3.jpg}" height="200" width="300"/>
         </div>
     </div>
 </div>

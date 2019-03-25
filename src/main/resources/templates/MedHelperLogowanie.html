@@ -22,14 +22,6 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" th:href="@{/map}">Przychodnie<span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-    </div>
     <div class="collapse navbar-collapse" id="navbarNav">
 
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
@@ -44,14 +36,11 @@
 
 
 <div class="row">
-    <div class="col-2" style="margin-top: 30px;">
+    <div class="col" style="margin-top: 30px;">
         <div class="list-group sticky-top">
             <a class="list-group-item text-light bg-success">Menu</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Nasze placówki</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 2</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 3</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 4</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Item 5</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Przychodnie</a>
             <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
         </div>
     </div>

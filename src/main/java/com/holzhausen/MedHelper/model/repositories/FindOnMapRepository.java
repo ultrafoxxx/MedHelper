@@ -1,4 +1,4 @@
-package com.holzhausen.MedHelper.repository;
+package com.holzhausen.MedHelper.model.repositories;
 
 import com.holzhausen.MedHelper.model.entities.Placowka;
 import org.springframework.data.jpa.repository.Query;

@@ -1,0 +1,11 @@
+Zajêcia 4. - logowanie do systemu (wszyscy u¿ytkownicy)
+Zaj. 5. - komunikacja z mapami google (pokazanie na mapach google lokalizacji oddzia³ów)
+Zaj. 6. – rejestracja nowego pacjenta (recepcjonista)
+Zaj. 7. – przegl¹danie i modyfikacja danych pacjenta (pacjent recepcjonista)
+Zaj. 8. – wprowadzanie nowych wizyt (administrator)
+Zaj. 9. - rezerwacja wizyty (pacjent i recepcjonista)
+Zaj. 10. – zarz¹dzanie placówkami (administrator)
+Zaj. 11. – zarz¹dzanie wizytami (admin+u¿ytkownik+recepcjonista)
+Zaj. 12. – zarz¹dzanie grafikami lekarzy (administrator)
+Zaj. 13. – przegl¹danie statystyk (koordynator serwisu)(cache)
+Zaj. 14. - panel wizyty (lekarz), wypisanie recepty i wypisanie zwolnienia (lekarz) + drukowanie

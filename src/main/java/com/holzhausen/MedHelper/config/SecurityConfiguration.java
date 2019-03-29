@@ -58,6 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/map/**").permitAll()
                     .antMatchers("/js/**").permitAll()
+                    .antMatchers("/addNewPatient").permitAll()
                     .anyRequest().authenticated().and().csrf()
                     .disable().formLogin()
                     .loginPage("/logowanie").failureUrl("/logowanie?error=true")
@@ -68,6 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/")
                     .and().rememberMe().key("secretKey").rememberMeParameter("remember-me");
+
         } catch (Exception e){
             e.printStackTrace();
         }

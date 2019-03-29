@@ -13,24 +13,19 @@ $("#look").click(function () {
 
 
 
-inputCity.keypress(function (event) {
-    ajaxgetCities();
-});
-inputAdress.keypress(function () {
-    ajaxgetAdresses();
-});
+// inputCity.keypress(function (event) {
+//
+// });
+// inputAdress.keypress(function () {
+//
+// });
 inputCity.keyup(function (event) {
-    console.log($(this).val());
-    if ($(this).val() === "") {
+    ajaxgetCities();
 
-        $(".inputhints").hide();
-    }
 });
 inputAdress.keyup(function (event) {
-    if ($(this).val() === "") {
+    ajaxgetAdresses();
 
-        $(".inputhints").hide();
-    }
 });
 
 
@@ -43,13 +38,20 @@ function ajaxgetCities() {
         cache: false,
         timeout: 600000,
         success: function (data) {
+            console.log($(inputCity).val());
             $("#hints1").empty();
             $.each(data, function (index, value) {
                 newListElement = $("<button type=\"button\" class=\"cities list-group-item list-group-item-action list-group-item-success\">");
                 newListElement.text(value);
                 $("#hints1").append(newListElement);
             });
-            $("#hints1").show();
+            if ($(inputCity).val() === "") {
+
+                $(".inputhints").hide();
+            } else {
+                $("#hints1").show();
+            }
+
 
             $("button.cities").click(function (event) {
                 $(inputCity).val($(this).text());

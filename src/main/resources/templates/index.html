@@ -22,6 +22,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/map}">Przychodnie<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
     </div>
     <div class="collapse navbar-collapse" id="navbarNav">
 
@@ -49,9 +54,12 @@
             <a class="list-group-item text-light bg-success">Menu</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Przychodnie</a>
-            <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/register}" sec:authorize="hasAuthority('Recepcjonista')">
+                Rejestracja pacjenta
+            </a>
         </div>
     </div>
+
 
     <div class="col-7">
         <div class="card border-success" style="margin-top:30px;">

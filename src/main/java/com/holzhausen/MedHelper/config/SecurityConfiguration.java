@@ -53,11 +53,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         try {
             http.authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/logowanie").anonymous()
+                    .antMatchers("/logowanie/**").anonymous()
                     .antMatchers("/images/**").permitAll()
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/map/**").permitAll()
                     .antMatchers("/js/**").permitAll()
+                    .antMatchers("/register/**").hasAuthority("Recepcjonista")
                     .anyRequest().authenticated().and().csrf()
                     .disable().formLogin()
                     .loginPage("/logowanie").failureUrl("/logowanie?error=true")

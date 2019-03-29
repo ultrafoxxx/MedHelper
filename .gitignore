@@ -3,6 +3,8 @@ HELP.md
 !.mvn/wrapper/maven-wrapper.jar
 ojdbc8.jar
 /resources/statc/js/jquery-3.3.1.js
+holzhausen.p12
+application.properties
 
 ### STS ###
 .apt_generated

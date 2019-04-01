@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div style="background-color: #5cb85c">
+        <h1 style="color: whitesmoke; padding: 10px">Medhelper</h1>
+    </div>
+    <div>
+        <h2 style="text-align: center">Dziękuję za zgłoszenie konta w naszym serwisie!</h2>
+    </div>
+    <div style="margin-top: 50px;margin-left: 10px">Zanim zalogujesz się potwierdź, że to ty założyłeś konto. Przy okazji możesz również zmienić swoje hasło.</div>
+    <div style="margin-left: 10px">Przydzielono ci następujące hasło:</div>
+    <div style="margin-left: 10px"th:text="${password}"></div>
+    <div style="margin-left: 10px">
+            <a th:href="'http://localhost:8080/activation/confirmAccount?userId='+${userId}" >Potwierdź konto</a>
+    </div>
+    <div style="margin-left: 10px">
+        <a th:href="'http://localhost:8080/activation/changePassword?userId='+${userId}+'&confirm=true'">Potwierdź konto i zmień hasło</a>
+    </div>
+
+</body>
+</html>

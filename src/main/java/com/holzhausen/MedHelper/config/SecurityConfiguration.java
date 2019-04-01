@@ -58,11 +58,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/map/**").permitAll()
                     .antMatchers("/js/**").permitAll()
-<<<<<<< HEAD
                     .antMatchers("/register/**").hasAuthority("Recepcjonista")
-=======
-                    .antMatchers("/addNewPatient").permitAll()
->>>>>>> a4c4274ee987e270fcea6de7b22c9352a76833e3
+                    .antMatchers("/activation/**").anonymous()
                     .anyRequest().authenticated().and().csrf()
                     .disable().formLogin()
                     .loginPage("/logowanie").failureUrl("/logowanie?error=true")

@@ -2,6 +2,7 @@ package com.holzhausen.MedHelper.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.holzhausen.MedHelper.validators.StringToNumberConstraint;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -33,8 +34,6 @@ public abstract class User implements Serializable {
     @Column(name = "email", unique = true, nullable = false, length = 60)
     private String email;
 
-    @NotEmpty(message = "Pole nie może być puste")
-    @Size(min = 10, message = "Hałsło musi posiadać minimum 10 znaków")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -56,9 +55,7 @@ public abstract class User implements Serializable {
     @Size(min = 9, max = 9, message = "Pole musi posiadać dokładnie 9 znaków")
     private String nrTelefonu;
 
-    @Column(name = "nrDowodu", nullable = false, unique = true)
-    @NotEmpty(message = "Pole nie może być puste")
-    @Size(min = 6, max = 6, message = "Pole musi posiadać dokładnie 6 znaków")
+    @Column(name = "nrDowodu", unique = true)
     private String nrDowodu;
 
     @Column(name = "CzyKontoPotwierdzone", nullable = false)

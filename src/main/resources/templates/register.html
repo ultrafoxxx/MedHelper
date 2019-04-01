@@ -14,6 +14,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/validation.css}">
 </head>
 
 <body style="background-color: #CCFF99">
@@ -53,45 +54,59 @@
     </div>
     <div class="col" style="margin-top: 30px;">
         <div class="shadow-sm p-3 mb-5 bg-white rounded" id="findPlace">
-            <form>
+            <form method="post" th:action="@{/register}" th:object="${pacjent}">
                 <div class="form-group myDiv">
                     <label for="inputImie">Imię</label>
                     <input type="text" class="form-control" id="inputImie" aria-describedby="cityHelp"
-                           placeholder="Imię">
+                           placeholder="Imię" th:field="*{imie}">
+                    <label th:if="${#fields.hasErrors('imie')}" th:errors="*{imie}" class="validation-message"></label>
                     <div class="list-group inputhints" id="hints1">
                     </div>
                 </div>
 
                 <div class="form-group myDiv">
                     <label for="inputNazwisko">Nazwisko</label>
-                    <input type="text" class="form-control" id="inputNazwisko" placeholder="Nazwisko">
+                    <input type="text" class="form-control" id="inputNazwisko" placeholder="Nazwisko" th:field="*{nazwisko}">
+                    <label th:if="${#fields.hasErrors('nazwisko')}" th:errors="*{nazwisko}" class="validation-message"></label>
                     <div class="list-group inputhints" id="hints2">
                     </div>
                 </div>
 
                 <div class="form-group myDiv">
                     <label for="inputEmail">Email</label>
-                    <input type="text" class="form-control" id="inputEmail" placeholder="email@gmail.com">
+                    <input type="text" class="form-control" id="inputEmail" placeholder="email@gmail.com" th:field="*{email}">
+                    <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
                     <div class="list-group inputhints" id="hints3">
                     </div>
                 </div>
 
                 <div class="form-group myDiv">
+                    <label for="inputEmail">Nr telefonu</label>
+                    <input type="text" class="form-control" id="inputPhone" placeholder="698568464"  th:field="*{nrTelefonu}">
+                    <label th:if="${#fields.hasErrors('nrTelefonu')}" th:errors="*{nrTelefonu}" class="validation-message"></label>
+                    <div class="list-group inputhints" id="hints7">
+                    </div>
+                </div>
+
+                <div class="form-group myDiv">
                     <label for="inputPesel">Pesel</label>
-                    <input type="text" class="form-control" id="inputPesel" placeholder="Pesel">
+                    <input type="text" class="form-control" id="inputPesel" placeholder="Pesel" th:field="*{pesel}">
+                    <label th:if="${#fields.hasErrors('pesel')}" th:errors="*{pesel}" class="validation-message"></label>
                     <div class="list-group inputhints" id="hints4">
                     </div>
                 </div>
 
                 <div class="form-group myDiv">
                     <label for="inputNumerDowodu">Numer dowodu osobistego</label>
-                    <input type="text" class="form-control" id="inputNumerDowodu" placeholder="Numer dowodu">
+                    <input type="text" class="form-control" id="inputNumerDowodu" placeholder="Numer dowodu" th:field="*{nrDowodu}">
+                    <label th:if="${#fields.hasErrors('nrDowodu')}" th:errors="*{nrDowodu}" class="validation-message"></label>
                     <div class="list-group inputhints" id="hints5">
                     </div>
                     <small id="dowodHelp" class="form-text text-muted">Pole niewymagane w przypadku osób niepełnoletnich</small>
                 </div>
 
-                <button type="button" class="btn btn-success" id="look">Zatwierdź</button>
+                <button type="submit" class="btn btn-success">Zatwierdź</button>
+                <span style="color: greenyellow" th:utext="${successMessage}"></span>
             </form>
         </div>
     </div>

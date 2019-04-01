@@ -1,10 +1,6 @@
 package com.holzhausen.MedHelper;
 
 import com.holzhausen.MedHelper.model.entities.Placowka;
-<<<<<<< HEAD
-=======
-
->>>>>>> a4c4274ee987e270fcea6de7b22c9352a76833e3
 import com.holzhausen.MedHelper.model.repositories.PlacowkaRepository;
 import com.holzhausen.MedHelper.model.services.FindOnMapService;
 import org.junit.Assert;
@@ -30,17 +26,6 @@ public class FindOnMapServiceTests {
     @MockBean
     PlacowkaRepository findOnMapRepository;
 
-<<<<<<< HEAD
-//    @TestConfiguration
-//    static class EmployeeServiceImplTestContextConfiguration {
-//
-//        @Autowired PlacowkaRepository findOnMapRepository;
-//        @Bean
-//        public FindOnMapService employeeService() {
-//            return new FindOnMapService(findOnMapRepository);
-//        }
-//    }
-=======
     @TestConfiguration
     static class EmployeeServiceImplTestContextConfiguration {
 
@@ -50,7 +35,6 @@ public class FindOnMapServiceTests {
             return new FindOnMapService(findOnMapRepository);
         }
     }
->>>>>>> a4c4274ee987e270fcea6de7b22c9352a76833e3
 
     @Before
     public void setUp(){
@@ -85,35 +69,26 @@ public class FindOnMapServiceTests {
         placowkiWro.add(placowka1);
         placowkiWro.add(placowka3);
 
-<<<<<<< HEAD
+
         List<Placowka> placowkiWaw= new ArrayList<>();
         placowkiWaw.add(placowka2);
 
-=======
+
         List<Placowka> placowkiWroP=new ArrayList<>();
         placowkiWroP.add(placowka3);
->>>>>>> a4c4274ee987e270fcea6de7b22c9352a76833e3
+
 
 
         Mockito.when(findOnMapRepository.findDistinctByMiastoContainingIgnoreCase("wr")).thenReturn(placowkiWro);
 
-<<<<<<< HEAD
         Mockito.when(findOnMapRepository.findDistinctByMiastoContainingIgnoreCase("wa")).thenReturn(placowkiWaw);
 
         Mockito.when(findOnMapRepository.findDistinctByMiastoContainingIgnoreCase("w")).thenReturn(placowki);
     }
 
-    @Test
-    public void pobieranieMiast(){
-=======
-
-        Mockito.when(findOnMapRepository.findAllByMiastoAndAdresContainingIgnoreCase("Wrocław", "p")).thenReturn(placowkiWroP);
-
-    }
 
     @Test
     public void pobieranieMiastWro(){
->>>>>>> a4c4274ee987e270fcea6de7b22c9352a76833e3
         List<String> otrzymane=findOnMapService.getPlacesWithCityContaining("wr");
         List<String> przewidywane = new ArrayList<>();
         przewidywane.add("Wrocław");
@@ -121,8 +96,7 @@ public class FindOnMapServiceTests {
         Assert.assertEquals(przewidywane,otrzymane);
     }
 
-<<<<<<< HEAD
-=======
+
     @Test
     public void pobieranieMiastWroP(){
         List<String> otrzymane=findOnMapService.getPlacesWithCityAndAddressCotaining("Wrocław", "p");
@@ -133,5 +107,4 @@ public class FindOnMapServiceTests {
     }
 
 
->>>>>>> a4c4274ee987e270fcea6de7b22c9352a76833e3
 }

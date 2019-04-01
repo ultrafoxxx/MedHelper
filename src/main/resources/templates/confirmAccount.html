@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Account</title>
+</head>
+<body>
+    <div th:if="${isConfirmed}">Twoje konto zostało potwierdzone</div>
+    <div th:if="${!isConfirmed}">Twoje konto już jest potwierdzone</div>
+    <a th:href="@{/}">Wróć do strony głównej</a>
+</body>
+</html>

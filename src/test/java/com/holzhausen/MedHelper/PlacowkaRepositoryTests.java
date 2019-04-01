@@ -2,6 +2,7 @@ package com.holzhausen.MedHelper;
 
 import com.holzhausen.MedHelper.model.entities.Placowka;
 import com.holzhausen.MedHelper.model.repositories.PlacowkaRepository;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -62,7 +67,7 @@ public class PlacowkaRepositoryTests {
 
         List<Placowka> outcome = repository.findDistinctByMiastoContainingIgnoreCase("Wrocław");
 
-        Assert.assertEquals(outcome, expectedOutcome);
+        assertEquals(outcome, expectedOutcome);
 
 
     }
@@ -105,7 +110,7 @@ public class PlacowkaRepositoryTests {
 
         List<Placowka> outcome = repository.findDistinctByMiastoContainingIgnoreCase("W");
 
-        Assert.assertEquals(outcome, expectedOutcome);
+        assertEquals(outcome, expectedOutcome);
 
 
     }
@@ -147,7 +152,7 @@ public class PlacowkaRepositoryTests {
 
         List<Placowka> outcome = repository.findDistinctByMiastoContainingIgnoreCase("szawa");
 
-        Assert.assertEquals(outcome, expectedOutcome);
+        assertEquals(outcome, expectedOutcome);
 
 
     }
@@ -190,7 +195,7 @@ public class PlacowkaRepositoryTests {
         List<Placowka> outcome = repository.findDistinctByMiastoContainingIgnoreCase("wrocław");
 
 
-        Assert.assertEquals(expectedOutcome, outcome);
+        assertEquals(expectedOutcome, outcome);
     }
 
     @Test
@@ -234,7 +239,7 @@ public class PlacowkaRepositoryTests {
         List<Placowka> outcome = repository.findDistinctByMiastoContainingIgnoreCase("");
 
 
-        Assert.assertEquals(expectedOutcome, outcome);
+        assertEquals(expectedOutcome, outcome);
     }
 
     @Test
@@ -277,7 +282,7 @@ public class PlacowkaRepositoryTests {
                 .findAllByMiastoAndAdresContainingIgnoreCase("Wrocław", "Ptysiowa 20");
 
 
-        Assert.assertEquals(expectedOutcome, outcome);
+        assertEquals(expectedOutcome, outcome);
     }
 
     @Test
@@ -320,7 +325,7 @@ public class PlacowkaRepositoryTests {
                 .findAllByMiastoAndAdresContainingIgnoreCase("Warszawa", "marszał");
 
 
-        Assert.assertEquals(expectedOutcome, outcome);
+        assertEquals(expectedOutcome, outcome);
     }
 
     @Test
@@ -362,8 +367,9 @@ public class PlacowkaRepositoryTests {
                 .findAllByMiastoAndAdresContainingIgnoreCase("Wroc", "Ptysiowa 20");
 
 
-        Assert.assertEquals(expectedOutcome, outcome);
+        assertEquals(expectedOutcome, outcome);
     }
+
 
 
 

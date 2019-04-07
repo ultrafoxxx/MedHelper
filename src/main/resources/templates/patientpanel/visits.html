@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MedHelper</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body style="background-color: #CCFF99">
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
+    <a class="navbar-brand" th:href="@{/}">MedHelper</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/map}">Przychodnie<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/logowanie}" sec:authorize="isAnonymous()">Logowanie<span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Wyloguj<span
+                            class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="row">
+    <div class="col-2" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Informacje
+                pacjentów</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Wizyty</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/register}">
+                Recepty i zwolnienia
+            </a>
+        </div>
+    </div>
+
+
+    <div class="shadow-sm p-3 mb-5 bg-white rounded col-9" id="myBlock" style="margin-top: 30px; background-color: white">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Lekarz</th>
+                <th scope="col">Sala</th>
+                <th scope="col">Placówka</th>
+                <th scope="col">Data i godzina</th>
+                <th scope="col">Działanie</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>Wrocław, ul. Marka Hłaski 20</td>
+                <td>@mdo</td>
+                <td>
+                    <button type="button" class="btn btn-success myChange" style="width: 100%">Odwołaj</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+</div>
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/modifyPatient.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

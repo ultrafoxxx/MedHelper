@@ -1,0 +1,17 @@
+#findPatient {
+    width: 50%;
+    padding: 20px;
+    margin-top: 50px;
+    margin-left: 25%;
+}
+
+
+.myDiv {
+    position: relative;
+}
+
+.inputhints {
+    z-index: 1;
+    width: 100%;
+    position: absolute;
+}

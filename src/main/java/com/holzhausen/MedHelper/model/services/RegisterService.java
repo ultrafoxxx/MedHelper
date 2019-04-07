@@ -42,7 +42,7 @@ public class RegisterService {
 
     }
 
-    public void register(User user){
+    public User register(User user){
 
         int length = 10;
         boolean useLetters = true;
@@ -63,6 +63,7 @@ public class RegisterService {
 
         service.sendEmail("ph.cool97@gmail.com", "MedHelper-Rejestracja", message);
 
+        return newUser;
     }
 
     public boolean confirmAccount(int id){

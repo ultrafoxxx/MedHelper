@@ -5,6 +5,7 @@ import com.holzhausen.MedHelper.model.formclasses.Credential;
 import com.holzhausen.MedHelper.model.repositories.UserRepository;
 import com.holzhausen.MedHelper.model.repositories.WizytaProjection;
 import com.holzhausen.MedHelper.model.repositories.WizytaProjectionImpl;
+import com.holzhausen.MedHelper.model.repositories.WizytaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ import java.util.List;
 @Service
 public class ReceptionistService {
 
-    private UserRepository repository;
+    private UserRepository userRepository;
+    private WizytaRepository wizytaRepository;
 
     @Autowired
-    public ReceptionistService(UserRepository repository) {
-        this.repository = repository;
+    public ReceptionistService(UserRepository userRepository, WizytaRepository wizytaRepository) {
+        this.userRepository = userRepository;
+        this.wizytaRepository = wizytaRepository;
     }
 
     public List<Credential> findUserByName(String fullName){
@@ -36,8 +39,8 @@ public class ReceptionistService {
             else {
                 lastArgument = "";
             }
-            List<User> firstOption = repository.findPatientsStartingWith(firstArgument, lastArgument);
-            List<User> secondOption = repository.findPatientsStartingWith(lastArgument, firstArgument);
+            List<User> firstOption = userRepository.findPatientsStartingWith(firstArgument, lastArgument);
+            List<User> secondOption = userRepository.findPatientsStartingWith(lastArgument, firstArgument);
             foundUsers.addAll(firstOption);
             foundUsers.addAll(secondOption);
         }
@@ -56,26 +59,27 @@ public class ReceptionistService {
             return null;
         }
         else {
-            User user = repository.findByPesel(info[2]);
+            User user = userRepository.findByPesel(info[2]);
             return user;
         }
     }
 
     public User findUserById(int userId){
-        return repository.findByUserId(userId);
+        return userRepository.findByUserId(userId);
     }
 
     public User updateUserInfo(User user){
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     public List<WizytaProjectionImpl> getVisists(int userId){
-        List<WizytaProjection> visits = repository.getVisitsForPatient(userId);
+        List<WizytaProjection> visits = userRepository.getVisitsForPatient(userId);
 
         List<WizytaProjectionImpl> translatedVisits= new ArrayList<>();
         Date date = new Date();
         for(WizytaProjection visit : visits){
             WizytaProjectionImpl newVisit = new WizytaProjectionImpl();
+            newVisit.setId(visit.getId());
             newVisit.setAdres(visit.getAdres());
             newVisit.setData(visit.getData());
             newVisit.setImie(visit.getImie());
@@ -98,5 +102,9 @@ public class ReceptionistService {
             translatedVisits.add(newVisit);
         }
         return translatedVisits;
+    }
+
+    public void removeVisit(int visitId){
+        wizytaRepository.deleteById(visitId);
     }
 }

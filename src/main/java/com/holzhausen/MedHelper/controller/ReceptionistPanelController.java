@@ -36,6 +36,7 @@ public class ReceptionistPanelController {
     @GetMapping(value = "/findPatient")
     public ModelAndView findPatient(){
         ModelAndView view = new ModelAndView();
+        view.addObject("warn", false);
         view.setViewName("patientpanel/findPatient");
         return view;
     }
@@ -49,10 +50,17 @@ public class ReceptionistPanelController {
     @PostMapping(value = "/getPatient")
     public ModelAndView getControlPanel(@RequestParam("patientInfo") String patientInfo, HttpSession session){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("patientpanel/patientPanel");
         User patient = service.getUserBySearchInfo(patientInfo);
-        session.setAttribute("userId", patient.getUserId());
-        modelAndView.addObject("patient", patient);
+        if(patient!=null){
+            modelAndView.setViewName("patientpanel/patientPanel");
+            session.setAttribute("userId", patient.getUserId());
+            modelAndView.addObject("patient", patient);
+        }
+        else {
+            modelAndView.addObject("warn", true);
+            modelAndView.setViewName("patientpanel/findPatient");
+        }
+
         return modelAndView;
     }
 
@@ -105,8 +113,11 @@ public class ReceptionistPanelController {
         return view;
     }
 
-    public boolean removeVisit(){
-        return false;
+    @GetMapping(value = "/removeVisit")
+    @ResponseBody
+    public boolean removeVisit(@RequestParam("visitId") int visitId){
+        service.removeVisit(visitId);
+        return true;
     }
 
 }

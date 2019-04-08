@@ -72,6 +72,7 @@
                     </div>
                     <small id="cityHelp" class="form-text text-muted">Podaj imię i nazwisko pacjenta, aby móc go wyszukać.</small>
                 </div>
+                <div th:if="${warn}">Podany pacjent nie istnieje</div>
                 <button type="submit" class="btn btn-success" id="look">Szukaj</button>
             </form>
         </div>

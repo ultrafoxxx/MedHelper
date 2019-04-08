@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MedHelper</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body style="background-color: #CCFF99">
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
+    <a class="navbar-brand" th:href="@{/}">MedHelper</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/map}">Przychodnie<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/logowanie}" sec:authorize="isAnonymous()">Logowanie<span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Wyloguj<span
+                            class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="row">
+    <div class="col-2" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Informacje
+                pacjentów</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/receptionistPanel/getVisits}">Wizyty</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/register}">
+                Recepty i zwolnienia
+            </a>
+        </div>
+    </div>
+
+
+    <div class="shadow-sm p-3 mb-5 bg-white rounded col-9" id="myBlock" style="margin-top: 30px; background-color: white">
+        <form method="post" th:action="@{/patientPanel/submitPatientChanges}" th:object="${patient}">
+            <div class="row" style="padding: 10px">
+                <div class="col-2" style="margin: auto">Imię</div>
+                <div class="col-7">
+                    <input class="form-control" type="text" th:field="*{imie}" readonly>
+                    <label th:if="${#fields.hasErrors('imie')}" th:errors="*{imie}" class="validation-message"></label>
+                </div>
+                <div class="col">
+
+                    <!--<button type="button" class="btn btn-success myChange" style="width: 100%">Zmień</button>-->
+                </div>
+            </div>
+            <div class="row" style="padding: 10px">
+                <div class="col-2" style="margin: auto">Nazwisko</div>
+                <div class="col-7">
+                    <input class="form-control" type="text" th:field="*{nazwisko}" readonly>
+                    <label th:if="${#fields.hasErrors('nazwisko')}" th:errors="*{nazwisko}" class="validation-message"></label>
+                </div>
+                <div class="col">
+
+                    <!--<button type="button" class="btn btn-success myChange" style="width: 100%">Zmień</button>-->
+                </div>
+            </div>
+            <div class="row" style="padding: 10px">
+                <div class="col-2" style="margin: auto">Email</div>
+                <div class="col-7">
+                    <input class="form-control" type="email" th:field="*{email}" readonly>
+                    <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
+                </div>
+                <div class="col">
+
+                    <!--<button type="button" class="btn btn-success myChange" style="width: 100%">Zmień</button>-->
+                </div>
+            </div>
+            <div class="row" style="padding: 10px">
+                <div class="col-2" style="margin: auto">Hasło</div>
+                <div class="col-7">
+                    <input class="form-control" type="password" th:field="*{password}" placeholder="SecretPassword" readonly>
+                    <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-success myChange" style="width: 100%">Zmień</button>
+                </div>
+            </div>
+            <div class="row" style="padding: 10px">
+                <div class="col-2" style="margin: auto">Nr Dowodu</div>
+                <div class="col-7">
+                    <input class="form-control" type="text" th:field="*{nrDowodu}" readonly>
+                    <label th:if="${#fields.hasErrors('nrDowodu')}" th:errors="*{nrDowodu}" class="validation-message"></label>
+                </div>
+                <div class="col">
+
+                    <!--<button type="button" class="btn btn-success myChange" style="width: 100%">Zmień</button>-->
+                </div>
+            </div>
+            <div class="row" style="padding: 10px">
+                <div class="col-2" style="margin: auto">Pesel</div>
+                <div class="col-7">
+                    <input class="form-control" type="text" th:field="*{pesel}" readonly>
+                    <label th:if="${#fields.hasErrors('pesel')}" th:errors="*{pesel}" class="validation-message"></label>
+                </div>
+                <div class="col">
+
+                    <!--<button type="button" class="btn btn-success myChange" style="width: 100%">Zmień</button>-->
+                </div>
+            </div>
+            <div class="row" style="padding: 10px">
+                <div class="col-2" style="margin: auto">Nr Telefonu</div>
+                <div class="col-7">
+                    <input class="form-control" type="text" th:field="*{nrTelefonu}" readonly>
+                    <label th:if="${#fields.hasErrors('nrTelefonu')}" th:errors="*{nrTelefonu}" class="validation-message"></label>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-success myChange" style="width: 100%">Zmień</button>
+                </div>
+            </div>
+            <div class="row" style="padding: 10px;">
+                <button type="submit" class="btn btn-success" style="width: 100%">Zatwierdź</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/modifyPatient.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

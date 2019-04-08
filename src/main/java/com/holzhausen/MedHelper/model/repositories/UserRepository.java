@@ -25,4 +25,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByPesel(String pesel);
 
+    @Query(nativeQuery = true, value = "SELECT W.id AS id, U2.imie AS imie, U2.nazwisko AS nazwisko, GL.nr_sali AS nrSali," +
+                                        " P.miasto AS miasto, P.adres AS adres, W.data AS data, W.time AS time " +
+                                        "FROM user U1 JOIN wizyta W ON U1.user_id=W.pacjent_id " +
+                                        "JOIN user U2 ON W.lekarz_id = U2.user_id " +
+                                        "JOIN gabinet_lekarski GL ON W.gabinet_lekarski_id = GL.id " +
+                                        "JOIN placowka P ON GL.placowka_id = P.id " +
+                                        "WHERE U1.user_id=:patientId " +
+                                        "ORDER BY W.data, W.time")
+    List<WizytaProjection> getVisitsForPatient(@Param(value = "patientId") int patientId);
+
+
 }

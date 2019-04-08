@@ -3,12 +3,12 @@ package com.holzhausen.MedHelper.controller;
 import com.holzhausen.MedHelper.model.entities.Pacjent;
 import com.holzhausen.MedHelper.model.entities.User;
 import com.holzhausen.MedHelper.model.formclasses.Credential;
+import com.holzhausen.MedHelper.model.repositories.WizytaProjectionImpl;
 import com.holzhausen.MedHelper.model.services.ReceptionistService;
 import com.holzhausen.MedHelper.validators.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -73,7 +73,7 @@ public class ReceptionistPanelController {
                         "[a-zA-Z\\d]$");
         Matcher matcher = pattern.matcher(pacjent.getPassword());
         if((pacjent.getPassword().length()<10 || !matcher.matches()) && pacjent.getPassword().length()>0){
-            result.rejectValue("password", "error.password", "Hasło nie spełnia wymogów");
+            result.rejectValue("password", "error.pacjent", "Hasło nie spełnia wymogów");
 
         }
         if(result.hasErrors()){
@@ -99,8 +99,14 @@ public class ReceptionistPanelController {
     @GetMapping(value = "/getVisits")
     public ModelAndView getVisits(HttpSession session){
         ModelAndView view = new ModelAndView();
+        List<WizytaProjectionImpl> visits = service.getVisists((int)session.getAttribute("userId"));
+        view.addObject("visits", visits);
         view.setViewName("patientpanel/visits");
         return view;
+    }
+
+    public boolean removeVisit(){
+        return false;
     }
 
 }

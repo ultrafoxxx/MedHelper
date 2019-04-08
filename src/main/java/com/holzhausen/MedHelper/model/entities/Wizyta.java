@@ -9,6 +9,7 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @Entity
@@ -26,6 +27,9 @@ public class Wizyta {
 
     @Column(name = "data", nullable = false)
     private Date data;
+
+    @Column(name = "time")
+    private Time time;
 
     @JsonBackReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId",
@@ -124,5 +128,21 @@ public class Wizyta {
 
     public void setGabinetLekarski(GabinetLekarski gabinetLekarski) {
         this.gabinetLekarski = gabinetLekarski;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    public Zwolnienie getZwolnienie() {
+        return zwolnienie;
+    }
+
+    public void setZwolnienie(Zwolnienie zwolnienie) {
+        this.zwolnienie = zwolnienie;
     }
 }

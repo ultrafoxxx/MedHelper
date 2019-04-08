@@ -57,6 +57,9 @@
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/register}" sec:authorize="hasAuthority('Recepcjonista')">
                 Rejestracja pacjenta
             </a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/patientPanel}" sec:authorize="hasAuthority('Pacjent')">
+                Moje dane
+            </a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/receptionistPanel/findPatient}"
                sec:authorize="hasAuthority('Recepcjonista')">
                 Panel recepcjonisty

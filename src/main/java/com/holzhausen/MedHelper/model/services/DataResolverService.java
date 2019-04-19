@@ -7,11 +7,13 @@ import com.holzhausen.MedHelper.model.repositories.PlacowkaRepository;
 import com.holzhausen.MedHelper.model.repositories.UserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -25,6 +27,8 @@ public class DataResolverService {
 
     private LekRepository lekRepository;
 
+    private BCryptPasswordEncoder encoder;
+
     private static final String[] placowkaColumns = {"miasto", "adres", "dlugoscGeo", "szerGeo", "telefon"};
 
     private static final String[] userColumns = {"rola", "email", "password", "nazwisko", "imie", "pesel", "nrTelefonu",
@@ -32,10 +36,12 @@ public class DataResolverService {
 
     private static final String[] lekColums = {"nazwa", "dawka", "forma"};
 
-    public DataResolverService(UserRepository userRepository, PlacowkaRepository placowkaRepository, LekRepository lekRepository) {
+    public DataResolverService(UserRepository userRepository, PlacowkaRepository placowkaRepository, LekRepository lekRepository,
+                               BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.placowkaRepository = placowkaRepository;
         this.lekRepository = lekRepository;
+        this.encoder = encoder;
     }
 
     @Async
@@ -68,7 +74,7 @@ public class DataResolverService {
                 for(int j=0;j<columnTable.length;j++){
                     if(columnNames[i].equals(columnTable[j])){
                         equals = true;
-                        tableMapping.put(columnNames[i], j);
+                        tableMapping.put(columnNames[i], i);
                     }
                 }
                 if(!equals){
@@ -105,7 +111,7 @@ public class DataResolverService {
                         throw new InvalidParameterException("There is problem with data you provided");
                     }
                     user.setEmail(parameters[tableMapping.get(userColumns[1])]);
-                    user.setPassword(parameters[tableMapping.get(userColumns[2])]);
+                    user.setPassword(encoder.encode(parameters[tableMapping.get(userColumns[2])]));
                     user.setNazwisko(parameters[tableMapping.get(userColumns[3])]);
                     user.setImie(parameters[tableMapping.get(userColumns[4])]);
                     user.setPesel(parameters[tableMapping.get(userColumns[5])]);

@@ -72,8 +72,8 @@
                 <option th:each="table : ${tables}" th:value="${table}" th:text="${table}"></option>
             </select>
             <div class="custom-file" style="margin-top: 20px">
-                <input type="file" class="custom-file-input" id="customFile" name="file">
-                <label class="custom-file-label" for="customFile">Wybierz plik</label>
+                <input type="file" class="custom-file-input" id="customFile" name="file" accept=".csv">
+                <label class="custom-file-label" for="customFile" id="label">Wybierz plik</label>
                 <small id="fileHelp" class="form-text text-muted">Wybierz plik CSV przedzielony średnikami.
                 Plik nie może mieć więcej niż 100MB.</small>
             </div>
@@ -86,6 +86,7 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/addData.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

@@ -24,6 +24,9 @@ import java.io.Serializable;
 })
 public abstract class User implements Serializable {
 
+    @Transient
+    public static final String[] roles = {"Pacjent", "Recepcjonista", "Lekarz", "Administrator"};
+
     @Id
     @GeneratedValue(generator = "UserIdGenerator")
     @Column(name = "user_id", nullable = false)

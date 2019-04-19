@@ -14,4 +14,6 @@ public interface PlacowkaRepository extends JpaRepository<Placowka, Integer> {
 
     List<Placowka> findAllByMiastoAndAdresContainingIgnoreCase(String cityName, String address);
 
+    Placowka save(Placowka placowka);
+
 }

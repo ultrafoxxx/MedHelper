@@ -50,4 +50,14 @@ public class AdminPanelController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/findDoctor")
+    public ModelAndView findDoctor(){
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("adminpanel/addVisits");
+        modelAndView.addObject("warn", false);
+        return modelAndView;
+
+    }
+
 }

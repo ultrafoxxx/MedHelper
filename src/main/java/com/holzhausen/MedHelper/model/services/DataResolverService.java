@@ -2,9 +2,7 @@ package com.holzhausen.MedHelper.model.services;
 
 import com.holzhausen.MedHelper.model.entities.*;
 import com.holzhausen.MedHelper.model.enums.Forma;
-import com.holzhausen.MedHelper.model.repositories.LekRepository;
-import com.holzhausen.MedHelper.model.repositories.PlacowkaRepository;
-import com.holzhausen.MedHelper.model.repositories.UserRepository;
+import com.holzhausen.MedHelper.model.repositories.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,19 +27,27 @@ public class DataResolverService {
 
     private BCryptPasswordEncoder encoder;
 
+    private SpecjalnoscRepository specjalnoscRepository;
+
+    private SpecjalnoscLekarzRepository specjalnoscLekarzRepository;
+
     private static final String[] placowkaColumns = {"miasto", "adres", "dlugoscGeo", "szerGeo", "telefon"};
 
     private static final String[] userColumns = {"rola", "email", "password", "nazwisko", "imie", "pesel", "nrTelefonu",
-            "nrDowodu"};
+            "nrDowodu", "specjalnosc"};
 
     private static final String[] lekColums = {"nazwa", "dawka", "forma"};
 
-    public DataResolverService(UserRepository userRepository, PlacowkaRepository placowkaRepository, LekRepository lekRepository,
-                               BCryptPasswordEncoder encoder) {
+    public DataResolverService(UserRepository userRepository, PlacowkaRepository placowkaRepository,
+                               LekRepository lekRepository, BCryptPasswordEncoder encoder,
+                               SpecjalnoscRepository specjalnoscRepository,
+                               SpecjalnoscLekarzRepository specjalnoscLekarzRepository) {
         this.userRepository = userRepository;
         this.placowkaRepository = placowkaRepository;
         this.lekRepository = lekRepository;
         this.encoder = encoder;
+        this.specjalnoscRepository = specjalnoscRepository;
+        this.specjalnoscLekarzRepository = specjalnoscLekarzRepository;
     }
 
     @Async
@@ -117,7 +123,21 @@ public class DataResolverService {
                     user.setPesel(parameters[tableMapping.get(userColumns[5])]);
                     user.setNrTelefonu(parameters[tableMapping.get(userColumns[6])]);
                     user.setNrDowodu(parameters[tableMapping.get(userColumns[7])]);
-                    userRepository.save(user);
+
+                    User savedUser = userRepository.save(user);
+                    if(user instanceof Lekarz){
+                        SpecjalnoscLekarz specjalnoscLekarz = new SpecjalnoscLekarz();
+                        specjalnoscLekarz.setLekarz((Lekarz)savedUser);
+                        Specjalnosc specjalnosc = specjalnoscRepository
+                                .getByName(parameters[tableMapping.get(userColumns[8])]);
+                        if(specjalnosc != null){
+                            specjalnoscLekarz.setSpecjalnosc(specjalnosc);
+                            specjalnoscLekarzRepository.save(specjalnoscLekarz);
+                        }
+                        else {
+                            throw new InvalidParameterException("There is problem with data you provided");
+                        }
+                    }
                 }
                 else {
                     Lek lek = new Lek();
@@ -131,6 +151,7 @@ public class DataResolverService {
         } catch (IOException e){
             e.printStackTrace();
         } catch (Exception e){
+            e.printStackTrace();
             throw new InvalidParameterException("There is problem with data you provided");
         }
     }

@@ -1,4 +1,4 @@
-package com.holzhausen.MedHelper.model.repositories;
+package com.holzhausen.MedHelper.model.projections;
 
 import java.sql.Date;
 import java.sql.Time;

@@ -1,9 +1,9 @@
-package com.holzhausen.MedHelper.model.repositories;
+package com.holzhausen.MedHelper.model.projections;
 
 import java.sql.Date;
 import java.sql.Time;
 
-public class WizytaProjectionImpl {
+public class WizytaProjectionImpl implements WizytaProjection{
 
     private int id;
     private String imie;
@@ -20,30 +20,37 @@ public class WizytaProjectionImpl {
 
     }
 
+    @Override
     public String getImie() {
         return imie;
     }
 
+    @Override
     public String getNazwisko() {
         return nazwisko;
     }
 
+    @Override
     public int getNrSali() {
         return nrSali;
     }
 
+    @Override
     public String getMiasto() {
         return miasto;
     }
 
+    @Override
     public String getAdres() {
         return adres;
     }
 
+    @Override
     public Date getData() {
         return data;
     }
 
+    @Override
     public Time getTime() {
         return time;
     }

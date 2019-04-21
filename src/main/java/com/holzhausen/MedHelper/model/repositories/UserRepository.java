@@ -1,10 +1,16 @@
 package com.holzhausen.MedHelper.model.repositories;
 
+import com.holzhausen.MedHelper.model.entities.Lekarz;
 import com.holzhausen.MedHelper.model.entities.User;
+import com.holzhausen.MedHelper.model.projections.LekarzProjection;
+import com.holzhausen.MedHelper.model.projections.WizytaProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
@@ -35,5 +41,31 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                                         "ORDER BY W.data, W.time")
     List<WizytaProjection> getVisitsForPatient(@Param(value = "patientId") int patientId);
 
+    @Query(nativeQuery = true, value = "SELECT CONCAT(U.imie, ' ', U.nazwisko) AS name, U.pesel AS pesel," +
+            " S.name AS specjalnosc, U.user_id AS userId " +
+            "FROM user U JOIN specjalnosc_lekarz SL " +
+            "ON U.user_id = SL.lekarz_id JOIN specjalnosc S " +
+            "ON SL.specjalnosc_id = S.id " +
+            "ORDER BY U.nazwisko")
+    List<LekarzProjection> getDoctors(Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) " +
+                                        "FROM user " +
+                                        "WHERE rola='Lekarz'")
+    int getNumberOfDoctors();
+
+    @Query(nativeQuery = true, value = "SELECT CONCAT(U.imie, ' ', U.nazwisko) AS name, U.pesel AS pesel," +
+            " S.name AS specjalnosc, U.user_id AS userId " +
+            "FROM user U JOIN specjalnosc_lekarz SL " +
+            "ON U.user_id = SL.lekarz_id JOIN specjalnosc S " +
+            "ON SL.specjalnosc_id = S.id " +
+            "WHERE MATCH(imie, nazwisko, pesel) AGAINST (:data IN BOOLEAN MODE)" +
+            "ORDER BY U.nazwisko")
+    List<LekarzProjection> queryDoctors(@Param(value = "data") String data, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) " +
+                                        "FROM user " +
+                                        "WHERE rola='Lekarz' AND MATCH(imie, nazwisko, pesel) AGAINST (:data IN BOOLEAN MODE)")
+    int getNumberOfDoctors(@Param(value = "data") String data);
 
 }

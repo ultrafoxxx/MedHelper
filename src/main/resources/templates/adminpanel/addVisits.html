@@ -11,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{/css/findPatient.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -60,49 +59,71 @@
             </a>
         </div>
     </div>
-    <div class="col">
+    <div class="col-9">
         <div class="shadow-sm p-3 mb-5 bg-white rounded" id="findPatient">
-            <form method="post">
+            <form method="post" th:action="@{/adminPanel/findDoctor}" autocomplete="off">
+                <input type="hidden" autocomplete="false">
                 <div class="form-group myDiv">
-                    <label for="inputName">Pesel lekarza</label>
+                    <label for="inputName">Dane lekarza</label>
                     <input type="text" class="form-control" id="inputName" aria-describedby="cityHelp"
-                           name="pesel">
-                    <small id="cityHelp" class="form-text text-muted">Podaj pesel lekarza, aby móc go wyszukać.</small>
+                           name="data">
+                    <small id="cityHelp" class="form-text text-muted">Podaj dane lekarza, aby móc go wyszukać.</small>
                 </div>
                 <div th:if="${warn}">Lekarz o podanym numerze pesel nie istnieje</div>
                 <button type="submit" class="btn btn-success" id="look">Szukaj</button>
             </form>
+            <table class="table table-bordered" style="margin-top: 30px">
+                <thead>
+                <tr>
+                    <th scope="col">Imię i Nazwisko</th>
+                    <th scope="col">Pesel</th>
+                    <th scope="col">Specjalność</th>
+                    <th scope="col">Dodaj wizytę</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="doctor : ${doctors}">
+                    <td th:text="'dr. '+${doctor.name}"></td>
+                    <td th:text="${doctor.pesel}"></td>
+                    <td th:text="${doctor.specjalnosc}">Otto</td>
+                    <td>
+                        <form method="get" th:action="@{/adminPanel/reserveVisits}">
+                            <input type="hidden" th:value="${doctor.userId}" name="doctorId">
+                            <button type="submit" class="btn btn-success" style="width: 100%">Dodaj wizyty</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example" th:if="${maxPage}>0">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:if="${page} > 1">
+                        <a class="page-link" th:href="@{/adminPanel/findDoctorPage(page=(${page}-1))}">Previous</a></li>
+                    <li class="page-item disabled" th:if="${page} == 1">
+                        <a class="page-link"  tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/adminPanel/findDoctorPage(page=(${page}-2))}" th:if="${page} > 2" th:text="${page}-2">
+                        </a></li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/adminPanel/findDoctorPage(page=(${page}-1))}" th:if="${page} > 1" th:text="${page}-1">
+                        </a></li>
+                    <li class="page-item active"><span class="page-link" th:text="${page}"><span class="sr-only">(current)</span></span></li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/adminPanel/findDoctorPage(page=(${page}+1))}" th:if="${page} < ${maxPage}" th:text="${page}+1">
+                        </a></li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/adminPanel/findDoctorPage(page=(${page}+2))}" th:if="${page} < ${maxPage}-1" th:text="${page}+2">
+                        </a></li>
+                    <li class="page-item" th:if="${page} < ${maxPage}">
+                        <a class="page-link" th:href="@{/adminPanel/findDoctorPage(page=(${page}+1))}">Next</a></li>
+                    <li class="page-item disabled" th:if="${page} == ${maxPage}">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 

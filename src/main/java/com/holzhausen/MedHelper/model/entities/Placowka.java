@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,12 @@ public class Placowka {
 
     @Column(name = "telefon", nullable = false)
     private String telefon;
+
+    @Column(name = "CzasOtwarcia", nullable = false)
+    private Time czasOtwarcia;
+
+    @Column(name = "CzasZamkniecia", nullable = false)
+    private Time czasZamkniecia;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "placowka", targetEntity = GabinetLekarski.class)
@@ -94,5 +101,21 @@ public class Placowka {
 
     public void setTelefon(String telefon) {
         this.telefon = telefon;
+    }
+
+    public Time getCzasOtwarcia() {
+        return czasOtwarcia;
+    }
+
+    public void setCzasOtwarcia(Time czasOtwarcia) {
+        this.czasOtwarcia = czasOtwarcia;
+    }
+
+    public Time getCzasZamkniecia() {
+        return czasZamkniecia;
+    }
+
+    public void setCzasZamkniecia(Time czasZamkniecia) {
+        this.czasZamkniecia = czasZamkniecia;
     }
 }

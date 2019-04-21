@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -31,7 +32,8 @@ public class DataResolverService {
 
     private SpecjalnoscLekarzRepository specjalnoscLekarzRepository;
 
-    private static final String[] placowkaColumns = {"miasto", "adres", "dlugoscGeo", "szerGeo", "telefon"};
+    private static final String[] placowkaColumns = {"miasto", "adres", "dlugoscGeo", "szerGeo", "telefon",
+            "czasOtwarcia", "czasZamkniecia"};
 
     private static final String[] userColumns = {"rola", "email", "password", "nazwisko", "imie", "pesel", "nrTelefonu",
             "nrDowodu", "specjalnosc"};
@@ -53,9 +55,7 @@ public class DataResolverService {
     @Async
     public void resolveCSVData(MultipartFile file, String tableName) {
 
-        File dataFile = new File(file.getOriginalFilename());
         Scanner scanner;
-        JpaRepository repository;
         String[] columnTable;
         if (tableName.equals("Placowka")){
             columnTable = placowkaColumns;
@@ -97,6 +97,8 @@ public class DataResolverService {
                     placowka.setDlugoscGeo(Double.parseDouble(parameters[tableMapping.get(placowkaColumns[2])]));
                     placowka.setSzerGeo(Double.parseDouble(parameters[tableMapping.get(placowkaColumns[3])]));
                     placowka.setTelefon(parameters[tableMapping.get(placowkaColumns[4])]);
+                    placowka.setCzasOtwarcia(Time.valueOf(parameters[tableMapping.get(placowkaColumns[5])]));
+                    placowka.setCzasZamkniecia(Time.valueOf(parameters[tableMapping.get(placowkaColumns[6])]));
                     placowkaRepository.save(placowka);
                 }
                 else if(tableName.equals("User")){

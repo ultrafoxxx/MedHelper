@@ -3,7 +3,7 @@ package com.holzhausen.MedHelper.controller;
 import com.holzhausen.MedHelper.model.entities.Pacjent;
 import com.holzhausen.MedHelper.model.entities.User;
 import com.holzhausen.MedHelper.model.formclasses.Credential;
-import com.holzhausen.MedHelper.model.repositories.WizytaProjectionImpl;
+import com.holzhausen.MedHelper.model.projections.WizytaProjectionImpl;
 import com.holzhausen.MedHelper.model.services.ReceptionistService;
 import com.holzhausen.MedHelper.validators.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;

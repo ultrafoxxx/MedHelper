@@ -1,20 +1,21 @@
 package com.holzhausen.MedHelper.controller;
 
+import com.holzhausen.MedHelper.model.entities.GabinetLekarski;
 import com.holzhausen.MedHelper.model.entities.Lekarz;
 import com.holzhausen.MedHelper.model.projections.LekarzProjectionImpl;
+import com.holzhausen.MedHelper.model.projections.OccupiedVisitsProjectionImpl;
+import com.holzhausen.MedHelper.model.projections.PlaceProjectionImpl;
 import com.holzhausen.MedHelper.model.services.AdminPanelService;
 import com.holzhausen.MedHelper.model.services.DataResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -93,8 +94,29 @@ public class AdminPanelController {
 
         ModelAndView  modelAndView = new ModelAndView();
         modelAndView.setViewName("/adminpanel/visitReserve");
+        modelAndView.addObject("doctorId", doctorId);
         return modelAndView;
 
+    }
+
+    @GetMapping(value = "/getHints")
+    @ResponseBody
+    public List<PlaceProjectionImpl> getPlaceHints(@RequestParam(name = "data") String data){
+        return adminPanelService.hintPlaces(data);
+    }
+
+    @GetMapping(value = "/getRooms")
+    @ResponseBody
+    public List<GabinetLekarski> getRooms(@RequestParam(name = "placeId") int placeId){
+        return adminPanelService.getRooms(placeId);
+    }
+
+    @GetMapping(value = "/getVisitsInfo")
+    @ResponseBody
+    public List<OccupiedVisitsProjectionImpl> getOccupiedVisits(@RequestParam(name = "date") Date date,
+                                                                @RequestParam(name = "gabinetId") int gabinetId,
+                                                                @RequestParam(name = "doctorId") int doctorId){
+        return adminPanelService.getOccupiedVisits(doctorId, date, gabinetId);
     }
 
 

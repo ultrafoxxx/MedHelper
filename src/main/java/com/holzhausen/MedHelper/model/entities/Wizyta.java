@@ -31,13 +31,16 @@ public class Wizyta {
     @Column(name = "time")
     private Time time;
 
+    @Column(name = "czasTrwania", nullable = false)
+    private int czasTrwania;
+
     @JsonBackReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId",
                         resolver = EntityResolver.class, scope = Pacjent.class)
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne(targetEntity = Pacjent.class, fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.LOCK})
-    @JoinColumns(value = {@JoinColumn(name = "pacjentId", referencedColumnName = "user_id", nullable = false)},
+    @JoinColumns(value = {@JoinColumn(name = "pacjentId", referencedColumnName = "user_id")},
     foreignKey = @ForeignKey(name = "wizyta_pacjentFK"))
     private Pacjent pacjent;
 
@@ -100,6 +103,14 @@ public class Wizyta {
 
     public Pacjent getPacjent() {
         return pacjent;
+    }
+
+    public int getCzasTrwania() {
+        return czasTrwania;
+    }
+
+    public void setCzasTrwania(int czasTrwania) {
+        this.czasTrwania = czasTrwania;
     }
 
     public void setPacjent(Pacjent pacjent) {

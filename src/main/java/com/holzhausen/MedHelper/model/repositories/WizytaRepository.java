@@ -13,11 +13,14 @@ import java.util.List;
 @Repository
 public interface WizytaRepository extends JpaRepository<Wizyta, Integer> {
 
+    Wizyta save(Wizyta wizyta);
+
     void deleteById(int id);
 
-    @Query(nativeQuery = true, value = "SELECT time, czas_trwania " +
+    @Query(nativeQuery = true, value = "SELECT time AS time, czas_trwania AS durationTime " +
                                         "FROM wizyta " +
-                                        "WHERE data")
+                                        "WHERE data=:date AND (lekarz_id=:doctorId OR gabinet_lekarski_id=:gabinetId) " +
+                                        "ORDER BY time")
     List<OccupiedVisitsProjection> getOccupiedVisits(@Param("doctorId") int doctorId, @Param("date")Date date,
                                                      @Param("gabinetId") int gabinetId);
 

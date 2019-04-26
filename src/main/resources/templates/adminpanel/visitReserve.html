@@ -62,11 +62,18 @@
     <div class="col-9">
         <div class="shadow-sm p-3 mb-5 bg-white rounded" id="findPlace">
             <form method="post" th:action="@{/register}">
-                <input type="hidden" th:value="${doctorId}">
+                <input type="hidden" th:value="${doctorId}" id="doctorId">
                 <div class="form-group myDiv">
                     <label for="inputDate">Data wizyt</label>
                     <input type="date" class="form-control" id="inputDate" aria-describedby="cityHelp" name="date">
                     <div class="list-group inputhints" id="hints1">
+                    </div>
+                </div>
+
+                <div class="form-group myDiv">
+                    <label for="inputTime">Czas wizyty</label>
+                    <input type="number" class="form-control" id="inputTime" name="visitTime">
+                    <div class="list-group inputhints">
                     </div>
                 </div>
 
@@ -85,9 +92,24 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-success" id="submitButton" disabled>Zatwierdź</button>
+                <button type="button" class="btn btn-success" id="submitButton">Zatwierdź</button>
             </form>
+
+            <table class="table table-bordered" style="margin-top: 30px">
+                <thead>
+                <tr>
+                    <th scope="col">Godzina rozpoczęcia</th>
+                    <th scope="col">Godzina zakończenia</th>
+                    <th scope="col">Rezerwuj</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-success" id="reserveButton">Zatwierdź rezerwacje</button>
         </div>
+
+
     </div>
 </div>
 

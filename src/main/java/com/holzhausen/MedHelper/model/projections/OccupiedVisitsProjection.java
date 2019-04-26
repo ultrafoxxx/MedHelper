@@ -6,6 +6,6 @@ public interface OccupiedVisitsProjection {
 
     Time getTime();
 
-    int getCzasTrwania();
+    int getDurationTime();
 
 }

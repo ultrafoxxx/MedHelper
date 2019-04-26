@@ -1,8 +1,7 @@
 package com.holzhausen.MedHelper.model.services;
 
-import com.holzhausen.MedHelper.model.entities.GabinetLekarski;
-import com.holzhausen.MedHelper.model.entities.Lekarz;
-import com.holzhausen.MedHelper.model.entities.Placowka;
+import com.holzhausen.MedHelper.model.entities.*;
+import com.holzhausen.MedHelper.model.formclasses.VisitSearchDetail;
 import com.holzhausen.MedHelper.model.projections.*;
 import com.holzhausen.MedHelper.model.repositories.GabinetLekarskiRepository;
 import com.holzhausen.MedHelper.model.repositories.PlacowkaRepository;
@@ -14,8 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.sql.Date;
+import javax.persistence.EntityManager;
+import java.sql.Time;
 import java.util.ArrayList;
+
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -32,13 +34,17 @@ public class AdminPanelService {
     private GabinetLekarskiRepository gabinetLekarskiRepository;
     private WizytaRepository wizytaRepository;
 
+    private EntityManager manager;
+
     @Autowired
     public AdminPanelService(UserRepository userRepository, PlacowkaRepository placowkaRepository,
-                             GabinetLekarskiRepository gabinetLekarskiRepository, WizytaRepository wizytaRepository) {
+                             GabinetLekarskiRepository gabinetLekarskiRepository, WizytaRepository wizytaRepository,
+                             EntityManager manager) {
         this.userRepository = userRepository;
         this.placowkaRepository = placowkaRepository;
         this.gabinetLekarskiRepository = gabinetLekarskiRepository;
         this.wizytaRepository = wizytaRepository;
+        this.manager = manager;
     }
 
     public List<LekarzProjectionImpl> getDoctors(String data, int page){
@@ -110,23 +116,95 @@ public class AdminPanelService {
         return gabinetLekarskiRepository.getGabinetsByPlaceId(placeId);
     }
 
-    public List<OccupiedVisitsProjectionImpl> getOccupiedVisits(int doctorId, Date date, int gabinetId){
+    public List<OccupiedVisitsProjectionImpl> getOccupiedVisits(VisitSearchDetail visitSearchDetail){
 
-        List<OccupiedVisitsProjection> occupiedVisits = wizytaRepository.getOccupiedVisits(doctorId, date, gabinetId);
+        List<OccupiedVisitsProjection> occupiedVisits = wizytaRepository
+                .getOccupiedVisits(visitSearchDetail.getDoctorId(), visitSearchDetail.getDate(),
+                        visitSearchDetail.getGabinetId());
 
-        List<OccupiedVisitsProjectionImpl> result = new ArrayList<>();
+        Placowka placowka = placowkaRepository.getPlacowkaWhereISGivenRoom(visitSearchDetail.getGabinetId());
+        String[] openTime = placowka.getCzasOtwarcia().toString().split(":");
+        String[] closeTime = placowka.getCzasZamkniecia().toString().split(":");
 
-        for(OccupiedVisitsProjection occupiedVisit: occupiedVisits){
-            OccupiedVisitsProjectionImpl data = new OccupiedVisitsProjectionImpl();
-            data.setTime(occupiedVisit.getTime());
-            data.setCzasTrwania(occupiedVisit.getCzasTrwania());
-            result.add(data);
+        String[] timeIter = openTime.clone();
+
+        List<OccupiedVisitsProjectionImpl> availableVisits = new ArrayList<>();
+
+        for(OccupiedVisitsProjection visits : occupiedVisits){
+            String[] occupiedVisitTime = visits.getTime().toString().split(":");
+            int difference = getMinutes(occupiedVisitTime) - getMinutes(timeIter);
+            for(int i=visitSearchDetail.getVisitTime();i<=difference;i+=visitSearchDetail.getVisitTime()){
+                OccupiedVisitsProjectionImpl newVisit = new OccupiedVisitsProjectionImpl();
+                newVisit.setDurationTime(visitSearchDetail.getVisitTime());
+                newVisit.setTime(getTranslatedTime(timeIter));
+                timeIter = getTime(getMinutes(timeIter)+visitSearchDetail.getVisitTime());
+                availableVisits.add(newVisit);
+            }
+            int durationTime = visits.getDurationTime();
+            timeIter = getTime(getMinutes(visits.getTime().toString().split(":"))+durationTime);
         }
 
-        return result;
+        int difference = getMinutes(closeTime) - getMinutes(timeIter);
+        for(int i=visitSearchDetail.getVisitTime();i<=difference;i+=visitSearchDetail.getVisitTime()){
+            OccupiedVisitsProjectionImpl newVisit = new OccupiedVisitsProjectionImpl();
+            newVisit.setDurationTime(visitSearchDetail.getVisitTime());
+            newVisit.setTime(getTranslatedTime(timeIter));
+            timeIter = getTime(getMinutes(timeIter)+visitSearchDetail.getVisitTime());
+            availableVisits.add(newVisit);
+        }
+
+        return availableVisits;
+    }
+
+    public void saveNewVisits(VisitSearchDetail visitSearchDetail){
+
+        Date visitDate = visitSearchDetail.getDate();
+        int durationTime = visitSearchDetail.getVisitTime();
+        Lekarz doctor = manager.getReference(Lekarz.class, visitSearchDetail.getDoctorId());
+        GabinetLekarski doctorsRoom = manager.getReference(GabinetLekarski.class, visitSearchDetail.getGabinetId());
+        for(String visitTime : visitSearchDetail.getTime()){
+            Wizyta wizyta = new Wizyta();
+            wizyta.setData(visitDate);
+            wizyta.setCzasTrwania(durationTime);
+            wizyta.setLekarz(doctor);
+            wizyta.setGabinetLekarski(doctorsRoom);
+            wizyta.setTime(Time.valueOf(visitTime));
+            wizytaRepository.save(wizyta);
+        }
+    }
+
+    private Time getTranslatedTime(String[] time){
+
+        StringBuilder builder = new StringBuilder();
+
+        for(int i=0;i<time.length;i++){
+            builder.append(time[i]);
+            builder.append(":");
+        }
+        builder.deleteCharAt(builder.length()-1);
+        return Time.valueOf(builder.toString());
 
     }
 
+    private int getMinutes(String[] time){
+        return Integer.parseInt(time[0])*60 + Integer.parseInt(time[1]);
+    }
+
+    private String[] getTime(int minutes){
+        String[] time = new String[3];
+        int hours = (int)Math.floor(minutes / 60);
+        time[0] = String.valueOf(hours);
+        if(hours<10){
+            time[0] = "0" + time[0];
+        }
+        int mins = minutes % 60;
+        time[1] = String.valueOf(mins);
+        if(mins < 10){
+            time[1] = "0" + time[1];
+        }
+        time[2] = "00";
+        return time;
+    }
 
 
 }

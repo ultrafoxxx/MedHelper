@@ -5,15 +5,36 @@ var inputPlace = $('#inputPlace');
 
 var inputRooms = $('#inputRooms');
 
+var tableBody = $('#tableBody');
+
 var submitButton = $('#submitButton');
 
 var inputDate = $('#inputDate');
+
+var hiddenDoctor = $('#doctorId');
+
+var inputTime = $('#inputTime');
+
+var reserveButton = $('#reserveButton');
+
+var chosenTimes = [];
+
+
 
 placeHints.hide();
 
 inputPlace.keyup(function (event) {
     ajaxgetPlaces();
 
+});
+
+
+submitButton.click(function (event) {
+    ajaxgetVisits($(inputDate).val(), $(inputRooms).val(), $(hiddenDoctor).val(), $(inputTime).val());
+});
+
+reserveButton.click(function () {
+    ajaxreserveVisits($(inputDate).val(), $(inputRooms).val(), $(hiddenDoctor).val(), $(inputTime).val());
 });
 
 function ajaxgetPlaces() {
@@ -72,4 +93,95 @@ function ajaxgetRooms(placeId) {
             });
         }
     })
+}
+
+function ajaxgetVisits(dates, gabinetId, doctorId, visitTime) {
+
+    var visits = new Object();
+    visits.date = dates;
+    visits.gabinetId = gabinetId;
+    visits.doctorId = doctorId;
+    visits.visitTime = visitTime;
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "http://localhost:8080/adminPanel/getVisitsInfo",
+        cache: false,
+        timeout: 600000,
+        data: JSON.stringify(visits),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        success: function (data) {
+            tableBody.empty();
+            $.each(data, function (index, value) {
+                inputRooms.append(newListElement);
+                var newRow = $("<tr>");
+                var newTD = $("<td>");
+                newTD.text(value.time);
+                newRow.append(newTD);
+                var nextTD = $("<td>");
+                var myTime = value.time.toString().split(":");
+                var endTimeMinutes = parseInt(myTime[0])*60+parseInt(myTime[1])+parseInt(value.durationTime);
+                nextTD.text(minutesToString(endTimeMinutes));
+                newRow.append(nextTD);
+                var newListElement = $("<button type=\"button\" class=\"btn btn-success reserve-button\">");
+                newListElement.text('Rezerwuj');
+                var buttonTD = $("<td>");
+                buttonTD.append(newListElement);
+                newRow.append(buttonTD);
+                tableBody.append(newRow);
+            });
+            var reserveButtons = $('.reserve-button');
+            reserveButtons.click(function (event) {
+                var chosenTimeElement = this.parentNode.parentNode;
+                chosenTimeElement.setAttribute('style', 'background-color: #75a0e5;');
+                chosenTimes.push(chosenTimeElement.childNodes.item(0).textContent);
+                console.log(chosenTimes);
+            });
+        }
+    })
+}
+
+function ajaxreserveVisits(dates, gabinetId, doctorId, visitTime) {
+
+    var visits = new Object();
+    visits.date = dates;
+    visits.gabinetId = gabinetId;
+    visits.doctorId = doctorId;
+    visits.visitTime = visitTime;
+    visits.time = chosenTimes;
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "http://localhost:8080/adminPanel/sendVisitData",
+        cache: false,
+        timeout: 600000,
+        data: JSON.stringify(visits),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        success: function (data) {
+            window.location = "http://localhost:8080/adminPanel";
+        }
+    })
+}
+
+function minutesToString(minutes){
+    var time = "";
+    var hours = Math.floor(minutes / 60).toString();
+    time += hours+':';
+    if(hours<10){
+        time = "0" + time;
+    }
+    var mins = (minutes % 60).toString();
+    if(mins < 10){
+        mins = "0"+mins;
+    }
+    time += mins + ":00";
+    return time;
 }

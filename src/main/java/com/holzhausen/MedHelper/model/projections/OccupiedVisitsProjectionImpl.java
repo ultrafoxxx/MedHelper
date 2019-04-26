@@ -6,7 +6,7 @@ public class OccupiedVisitsProjectionImpl implements OccupiedVisitsProjection {
 
     private Time time;
 
-    private int czasTrwania;
+    private int durationTime;
 
     @Override
     public Time getTime() {
@@ -14,15 +14,15 @@ public class OccupiedVisitsProjectionImpl implements OccupiedVisitsProjection {
     }
 
     @Override
-    public int getCzasTrwania() {
-        return czasTrwania;
+    public int getDurationTime() {
+        return durationTime;
     }
 
     public void setTime(Time time) {
         this.time = time;
     }
 
-    public void setCzasTrwania(int czasTrwania) {
-        this.czasTrwania = czasTrwania;
+    public void setDurationTime(int durationTime) {
+        this.durationTime = durationTime;
     }
 }

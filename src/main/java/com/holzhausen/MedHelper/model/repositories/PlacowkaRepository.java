@@ -23,6 +23,13 @@ public interface PlacowkaRepository extends JpaRepository<Placowka, Integer> {
                                         "WHERE MATCH(miasto, adres) AGAINST (:data IN BOOLEAN MODE)")
     List<PlaceProjection> findAllPlacowkaGivenQuery(@Param("data") String data, Pageable pageable);
 
+    @Query(nativeQuery = true, value = "SELECT * " +
+                                        "FROM placowka " +
+                                        "WHERE id IN (SELECT GL.placowka_id " +
+                                                        "FROM gabinet_lekarski GL" +
+                                                        " WHERE GL.id=:gabinetId)")
+    Placowka getPlacowkaWhereISGivenRoom(@Param("gabinetId") int gabinetId);
+
     Placowka save(Placowka placowka);
 
 }

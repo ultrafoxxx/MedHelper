@@ -2,6 +2,7 @@ package com.holzhausen.MedHelper.controller;
 
 import com.holzhausen.MedHelper.model.entities.GabinetLekarski;
 import com.holzhausen.MedHelper.model.entities.Lekarz;
+import com.holzhausen.MedHelper.model.formclasses.VisitSearchDetail;
 import com.holzhausen.MedHelper.model.projections.LekarzProjectionImpl;
 import com.holzhausen.MedHelper.model.projections.OccupiedVisitsProjectionImpl;
 import com.holzhausen.MedHelper.model.projections.PlaceProjectionImpl;
@@ -111,12 +112,17 @@ public class AdminPanelController {
         return adminPanelService.getRooms(placeId);
     }
 
-    @GetMapping(value = "/getVisitsInfo")
+    @PostMapping(value = "/getVisitsInfo")
     @ResponseBody
-    public List<OccupiedVisitsProjectionImpl> getOccupiedVisits(@RequestParam(name = "date") Date date,
-                                                                @RequestParam(name = "gabinetId") int gabinetId,
-                                                                @RequestParam(name = "doctorId") int doctorId){
-        return adminPanelService.getOccupiedVisits(doctorId, date, gabinetId);
+    public List<OccupiedVisitsProjectionImpl> getOccupiedVisits(@RequestBody VisitSearchDetail visitSearchDetail){
+        return adminPanelService.getOccupiedVisits(visitSearchDetail);
+    }
+
+    @PostMapping(value = "/sendVisitData")
+    @ResponseBody
+    public boolean reserveVisits(@RequestBody VisitSearchDetail visitSearchDetail){
+        adminPanelService.saveNewVisits(visitSearchDetail);
+        return true;
     }
 
 

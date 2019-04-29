@@ -43,7 +43,7 @@
 </nav>
 
 <div class="row">
-    <div class="col" style="margin-top: 30px;">
+    <div class="col-2" style="margin-top: 30px;">
         <div class="list-group sticky-top">
             <a class="list-group-item text-light bg-success">Menu</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
@@ -66,60 +66,43 @@
         </div>
     </div>
 
-
-    <div class="col-7">
-        <div class="card border-success" style="margin-top:30px;">
-            <div class="card-header bg-success text-light border-success">25.04.2019</div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h6 class="card-title border-success">Konsultacja alergologa</h6>
-                        <p class="card-text">Dr Anna Zalewska</p>
-                    </div>
-                    <div class="col">
-                        <h4 class="card-title border-success" style="text-align: right;">17:45</h4>
+    <div class="col-9">
+        <div class="shadow-sm p-3 mb-5 bg-white rounded" id="findPlace">
+            <form method="post">
+                <div class="form-group myDiv">
+                    <label for="inputDate">Wybierz datę</label>
+                    <input type="date" class="form-control" id="inputDate" aria-describedby="cityHelp" name="date">
+                    <div class="list-group inputhints" id="hints1">
                     </div>
                 </div>
-            </div>
-            <div class="card-footer bg-transparent border-success">
-                <div class="col">
-                    <button type="button" class="btn btn-success myChange" style="width: 100%">Zarezerwuj</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col" style="margin-top: 30px;">
-        <form>
-        <div class="list-group sticky-top">
-            <div>
-                <label>
-                    Wybór specjalizacji
-                </label>
-                <select class="form-control col" onchange="changeFunction(this)" >
-                    <option></option>
-                </select>
-            </div>
 
-            <div class="form-group myDiv">
-                <label for="inputDoctor">Lekarz</label>
-                <input type="text" class="form-control" id="inputDoctor" placeholder="Nazwisko i imię">
-                <div class="list-group inputhints" id="">
+
+                <div class="form-group myDiv">
+                    <label for="inputPlace">Wybierz placówkę</label>
+                    <input type="text" class="form-control" id="inputPlace" placeholder="Marka Hłaski, Wrocław">
+                    <div class="list-group inputhints" id="hints2">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group myDiv">
-                <label for="inputData1">Data od</label>
-                <input type="text" class="form-control" id="inputData1" placeholder="Od">
-            </div>
+
+                <div class="form-group myDiv">
+                    <label for="inputRooms">Wybierz specjalizację lekarza</label>
+                    <select class="form-control" id="inputRooms" name="gabinetId">
+                        <option>Dowolna specjalizacja</option>
+                        <option th:each="specialty : ${specialties}" th:value="${specialty.name}" th:text="${specialty.name}"></option>
+                    </select>
+                    <div class="list-group inputhints" id="hints3">
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-success" id="submitButton">Szukaj dostępnych wizyt</button>
+            </form>
         </div>
 
-        <div class="form-group myDiv">
-            <label for="inputData2">Data do</label>
-            <input type="text" class="form-control" id="inputData2" placeholder="Do">
-        </div>
-        </form>
+
     </div>
-</div>
-</div>
+
+
+
 </div>
 
 

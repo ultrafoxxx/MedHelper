@@ -17,6 +17,10 @@ var inputTime = $('#inputTime');
 
 var reserveButton = $('#reserveButton');
 
+var invalidReserve = $('#invalidReserve');
+
+var invalidData = $('#invalidData');
+
 var chosenTimes = [];
 
 
@@ -30,11 +34,24 @@ inputPlace.keyup(function (event) {
 
 
 submitButton.click(function (event) {
-    ajaxgetVisits($(inputDate).val(), $(inputRooms).val(), $(hiddenDoctor).val(), $(inputTime).val());
+    if(inputPlace.val() === '' || inputRooms.val() === '' || inputDate.val() === '' || inputTime.val() === ''
+    || parseInt(inputTime.val())<=0){
+        invalidData.attr('style', 'display: initial;');
+    }
+    else {
+        ajaxgetVisits($(inputDate).val(), $(inputRooms).val(), $(hiddenDoctor).val(), $(inputTime).val());
+    }
+
 });
 
 reserveButton.click(function () {
-    ajaxreserveVisits($(inputDate).val(), $(inputRooms).val(), $(hiddenDoctor).val(), $(inputTime).val());
+    if(chosenTimes.length === 0){
+        invalidReserve.attr('style', 'display: initial;');
+    }
+    else {
+        ajaxreserveVisits($(inputDate).val(), $(inputRooms).val(), $(hiddenDoctor).val(), $(inputTime).val());
+    }
+
 });
 
 function ajaxgetPlaces() {
@@ -136,10 +153,23 @@ function ajaxgetVisits(dates, gabinetId, doctorId, visitTime) {
             });
             var reserveButtons = $('.reserve-button');
             reserveButtons.click(function (event) {
-                var chosenTimeElement = this.parentNode.parentNode;
-                chosenTimeElement.setAttribute('style', 'background-color: #75a0e5;');
-                chosenTimes.push(chosenTimeElement.childNodes.item(0).textContent);
-                console.log(chosenTimes);
+                if(this.textContent === 'Rezerwuj'){
+                    var chosenTimeElement = this.parentNode.parentNode;
+                    this.textContent = 'Odznacz';
+                    chosenTimeElement.setAttribute('style', 'background-color: #75a0e5;');
+                    chosenTimes.push(chosenTimeElement.childNodes.item(0).textContent);
+                    console.log(chosenTimes);
+                    invalidReserve.attr('style', 'display: none;');
+                }
+                else {
+                    var chosenTimeElement = this.parentNode.parentNode;
+                    this.textContent = 'Rezerwuj';
+                    chosenTimeElement.removeAttribute('style');
+                    chosenTimes = jQuery.grep(chosenTimes, function (value) {
+                        return value !== chosenTimeElement.childNodes.item(0).textContent;
+                    });
+                    console.log(chosenTimes);
+                }
             });
         }
     })

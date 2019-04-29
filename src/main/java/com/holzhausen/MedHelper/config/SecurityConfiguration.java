@@ -63,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/receptionistPanel/**").hasAuthority("Recepcjonista")
                     .antMatchers("/patientPanel/**").hasAuthority("Pacjent")
                     .antMatchers("/adminPanel/**").hasAuthority("Administrator")
+                    .antMatchers("/reserveVisit").permitAll()
                     .anyRequest().authenticated().and().csrf()
                     .disable().formLogin()
                     .loginPage("/logowanie").failureUrl("/logowanie?error=true")

@@ -145,7 +145,7 @@ function ajaxgetVisits(dates, gabinetId, doctorId, visitTime) {
                 nextTD.text(minutesToString(endTimeMinutes));
                 newRow.append(nextTD);
                 var newListElement = $("<button type=\"button\" class=\"btn btn-success reserve-button\">");
-                newListElement.text('Rezerwuj');
+                newListElement.text('Dodaj');
                 var buttonTD = $("<td>");
                 buttonTD.append(newListElement);
                 newRow.append(buttonTD);
@@ -153,7 +153,7 @@ function ajaxgetVisits(dates, gabinetId, doctorId, visitTime) {
             });
             var reserveButtons = $('.reserve-button');
             reserveButtons.click(function (event) {
-                if(this.textContent === 'Rezerwuj'){
+                if(this.textContent === 'Dodaj'){
                     var chosenTimeElement = this.parentNode.parentNode;
                     this.textContent = 'Odznacz';
                     chosenTimeElement.setAttribute('style', 'background-color: #75a0e5;');
@@ -163,7 +163,7 @@ function ajaxgetVisits(dates, gabinetId, doctorId, visitTime) {
                 }
                 else {
                     var chosenTimeElement = this.parentNode.parentNode;
-                    this.textContent = 'Rezerwuj';
+                    this.textContent = 'Dodaj';
                     chosenTimeElement.removeAttribute('style');
                     chosenTimes = jQuery.grep(chosenTimes, function (value) {
                         return value !== chosenTimeElement.childNodes.item(0).textContent;

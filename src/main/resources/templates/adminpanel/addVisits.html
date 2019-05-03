@@ -85,7 +85,7 @@
                 <tr th:each="doctor : ${doctors}">
                     <td th:text="'dr. '+${doctor.name}"></td>
                     <td th:text="${doctor.pesel}"></td>
-                    <td th:text="${doctor.specjalnosc}">Otto</td>
+                    <td th:text="${doctor.hello}">Otto</td>
                     <td>
                         <form method="get" th:action="@{/adminPanel/reserveVisits}">
                             <input type="hidden" th:value="${doctor.userId}" name="doctorId">

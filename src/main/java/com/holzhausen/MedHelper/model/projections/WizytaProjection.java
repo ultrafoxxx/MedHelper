@@ -19,5 +19,9 @@ public interface WizytaProjection {
 
     Date getData();
 
-    Time getTime() ;
+    String getHello();
+
+    Time getTime();
+
+
 }

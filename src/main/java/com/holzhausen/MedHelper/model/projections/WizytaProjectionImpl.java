@@ -11,6 +11,7 @@ public class WizytaProjectionImpl implements WizytaProjection{
     private int nrSali;
     private String miasto;
     private String adres;
+    private String hello;
     private Date data;
     private Time time;
     private boolean actual;
@@ -53,6 +54,15 @@ public class WizytaProjectionImpl implements WizytaProjection{
     @Override
     public Time getTime() {
         return time;
+    }
+
+    @Override
+    public String getHello() {
+        return hello;
+    }
+
+    public void setHello(String hello) {
+        this.hello = hello;
     }
 
     public void setImie(String imie) {
@@ -106,4 +116,6 @@ public class WizytaProjectionImpl implements WizytaProjection{
     public void setId(int id) {
         this.id = id;
     }
+
+
 }

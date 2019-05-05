@@ -3,6 +3,7 @@ package com.holzhausen.MedHelper.model.repositories;
 import com.holzhausen.MedHelper.model.entities.Lekarz;
 import com.holzhausen.MedHelper.model.entities.User;
 import com.holzhausen.MedHelper.model.projections.LekarzProjection;
+import com.holzhausen.MedHelper.model.projections.PatientProjection;
 import com.holzhausen.MedHelper.model.projections.WizytaProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,5 +68,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                                         "FROM user " +
                                         "WHERE rola='Lekarz' AND MATCH(imie, nazwisko, pesel) AGAINST (:data IN BOOLEAN MODE)")
     int getNumberOfDoctors(@Param(value = "data") String data);
+
+    @Query(nativeQuery = true, value = "SELECT CONCAT(imie, ' ', nazwisko) AS name, pesel AS pesel," +
+            "  user_id AS id, nr_dowodu AS licenseNumber " +
+            "FROM user " +
+            "WHERE (MATCH(imie, nazwisko, pesel) AGAINST (:data IN BOOLEAN MODE)) AND rola='Pacjent' " +
+            "ORDER BY nazwisko")
+    List<PatientProjection> queryPatients(@Param(value = "data") String data, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) " +
+            "FROM user " +
+            "WHERE rola='Pacjent' AND MATCH(imie, nazwisko, pesel) AGAINST (:data IN BOOLEAN MODE)")
+    int getNumberOfPatients(@Param(value = "data") String data);
 
 }

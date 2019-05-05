@@ -8,6 +8,8 @@ import com.holzhausen.MedHelper.model.repositories.SpecjalnoscRepository;
 import com.holzhausen.MedHelper.model.repositories.UserRepository;
 import com.holzhausen.MedHelper.model.repositories.WizytaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -20,6 +22,7 @@ import java.util.List;
 @Service
 public class ReserveVisitService {
 
+    private static final int NUM_PAGES = 10;
     private SpecjalnoscRepository specjalnoscRepository;
     private WizytaRepository wizytaRepository;
     private UserRepository repository;
@@ -85,13 +88,54 @@ public class ReserveVisitService {
         return result;
     }
 
-    public void reserveVisit(int visitId){
+    public void reserveVisit(int visitId, int patientId){
 
         Wizyta reservation = wizytaRepository.findById(visitId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User)authentication.getPrincipal();
-        reservation.setPacjent((Pacjent)repository.findByEmail(user.getUsername()));
+        if(patientId == -1){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User)authentication.getPrincipal();
+            reservation.setPacjent((Pacjent)repository.findByEmail(user.getUsername()));
+        }
+        else {
+            reservation.setPacjent((Pacjent)repository.findByUserId(patientId));
+        }
         wizytaRepository.save(reservation);
+    }
+
+    public List<PatientProjectionImpl> getPatients(String data, int page){
+
+        List<PatientProjectionImpl> patients = new ArrayList<>();
+
+        List<PatientProjection> sourceData;
+
+        Pageable pageable = PageRequest.of(page, NUM_PAGES);
+
+
+        data+="*";
+        sourceData = repository.queryPatients(data, pageable);
+
+
+        for(PatientProjection sourcePatient : sourceData){
+
+            PatientProjectionImpl patient = new PatientProjectionImpl();
+
+            patient.setName(sourcePatient.getName());
+            patient.setPesel(sourcePatient.getPesel());
+            patient.setLicenseNumber(sourcePatient.getLicenseNumber());
+            patient.setId(sourcePatient.getId());
+            patients.add(patient);
+
+        }
+
+        return patients;
+
+    }
+
+    public int getNumberOfPatients(String data){
+
+        return repository.getNumberOfPatients(data);
+
+
     }
 
 }

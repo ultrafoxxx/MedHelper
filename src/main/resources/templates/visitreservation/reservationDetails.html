@@ -71,7 +71,11 @@
             <form method="get" th:action="@{/reserveVisit}">
                 <button type="submit" class="btn btn-success">Odrzuć</button>
             </form>
-            <form method="post">
+            <form method="post" th:action="@{/reserveVisit/confirm}" sec:authorize="hasAuthority('Pacjent')">
+                <input type="hidden" th:value="${visitId}" name="visitId">
+                <button type="submit" class="btn btn-success">Potwierdź</button>
+            </form>
+            <form method="post" th:action="@{/reserveVisit/receptionistReserve}" sec:authorize="hasAuthority('Recepcjonista')">
                 <input type="hidden" th:value="${visitId}" name="visitId">
                 <button type="submit" class="btn btn-success">Potwierdź</button>
             </form>

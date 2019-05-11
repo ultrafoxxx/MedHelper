@@ -1,6 +1,7 @@
 package com.holzhausen.MedHelper.model.repositories;
 
 import com.holzhausen.MedHelper.model.entities.Placowka;
+import com.holzhausen.MedHelper.model.projections.AgencyProjection;
 import com.holzhausen.MedHelper.model.projections.PlaceProjection;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,6 +30,11 @@ public interface PlacowkaRepository extends JpaRepository<Placowka, Integer> {
                                                         "FROM gabinet_lekarski GL" +
                                                         " WHERE GL.id=:gabinetId)")
     Placowka getPlacowkaWhereISGivenRoom(@Param("gabinetId") int gabinetId);
+
+//    @Query(nativeQuery = true, value = "SELECT id AS id, CONCAT(miasto, ', ul. ', adres) AS fullName " +
+//                                        "FROM placowka " +
+//                                        "WHERE MATCH(miasto) AGAINST (:data IN BOOLEAN MODE)")
+//    List<AgencyProjection> findAgencies(@Param("miasto") String miasto);
 
     Placowka save(Placowka placowka);
 

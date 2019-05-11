@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MedHelper</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/validation.css}">
+</head>
+
+<body style="background-color: #CCFF99">
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
+    <a class="navbar-brand" th:href="@{/}">MedHelper</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/logowanie}" sec:authorize="isAnonymous()">Logowanie<span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/logout}" sec:authorize="isAuthenticated()">Wyloguj<span
+                            class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg background-color:#CCFF99">
+    <span class="navbar-brand mb-0 h1 mx-auto">Dodawanie placówki</span>
+</nav>
+
+<div class="row">
+    <div class="col-2" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
+            <a class="list-group-item text-light bg-success">Menu</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Przychodnie</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
+        </div>
+    </div>
+    <div class="col" style="margin-top: 30px;">
+        <div class="shadow-sm p-3 mb-5 bg-white rounded" id="findPlace">
+            <!-- Link powinien wyglądać jak wiadć poniżej w th:action, musi zawierać prefix @ i ścieżka względna do
+             odpowiedniego kontrolera
+             Obiekt formularza odnosi się do obiektu, który wysłaliśmy w kontrolerze i chcemy go wypełnić.
+             W przypadku obiektów jeżeli chcemy coś z nimi zrobić w widoku, musimy użyć prefixu $
+             Jeżeli ten obiekt nie jest typu prostego np. int i zawiera jakieś pola, odwołujemy się do takiego pola,
+             jakby było ono publiczne - obiekt.pole-->
+            <form method="post" th:action="@{/addAgency}" th:object="${placowka}">
+                <div class="form-group myDiv">
+                    <label for="inputCity">Miasto</label>
+                    <!-- Aby przypisać odpowiednie pole obiektu z th:object do odpowiedniego inputa, należy użyć
+                th:field z prefixem *. Natomiast jeżeli chcemy mieć informację walidacyjną z serwera, musi
+                mieć ona strukturę taką jak label pod inputem.-->
+                    <input type="text" class="form-control" id="inputCity" aria-describedby="cityHelp"
+                           placeholder="Miasto" th:field="*{miasto}">
+                </div>
+
+
+                <div class="form-group myDiv">
+                    <label for="inputAddress">Adres</label>
+                    <input type="text" class="form-control" id="inputAddress" placeholder="Adres"
+                           th:field="*{adres}">
+                </div>
+
+                <div class="form-group myDiv">
+                    <label for="inputDlugosc">Dlugość geograficzna</label>
+                    <input type="text" class="form-control" id="inputDlugosc" placeholder="Długość geograficzna"
+                           th:field="*{DlugoscGeo}">
+                </div>
+
+
+                <div class="form-group myDiv">
+                    <label for="inputSzer">Szerokość geograficzna</label>
+                    <input type="text" class="form-control" id="inputSzer" placeholder="Szerokość geograficzna"
+                           th:field="*{SzerGeo}">
+                </div>
+
+
+                <div class="form-group myDiv">
+                    <label for="inputTel">Telefon</label>
+                    <input type="text" class="form-control" id="inputTel" placeholder="Telefon"
+                           th:field="*{telefon}">
+                </div>
+
+
+                <div class="form-group myDiv">
+                    <label for="inputOtwarcie">Czas otwarcia</label>
+                    <input type="text" class="form-control" id="inputOtwarcie" placeholder="Godzina otwarcia"
+                           th:field="*{CzasOtwarcia}">
+                </div>
+
+                <div class="form-group myDiv">
+                    <label for="inputZamkniecie">Czas zamknięcia</label>
+                    <input type="text" class="form-control" id="inputZamkniecie" placeholder="Godzina zamknięcia"
+                           th:field="*{CzasZamkniecia}">
+                </div>
+
+                <button type="submit" class="btn btn-success">Zatwierdź</button>
+                <span style="color: greenyellow" th:utext="${successMessage}"></span>
+            </form>
+        </div>
+    </div>
+    <div class="col-2" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
+
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/js/jquery-3.3.1.js}"></script>
+<script th:src="@{/js/findOnMap.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

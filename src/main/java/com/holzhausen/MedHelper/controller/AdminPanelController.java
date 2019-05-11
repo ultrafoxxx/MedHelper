@@ -6,6 +6,7 @@ import com.holzhausen.MedHelper.model.formclasses.VisitSearchDetail;
 import com.holzhausen.MedHelper.model.projections.LekarzProjectionImpl;
 import com.holzhausen.MedHelper.model.projections.OccupiedVisitsProjectionImpl;
 import com.holzhausen.MedHelper.model.projections.PlaceProjectionImpl;
+import com.holzhausen.MedHelper.model.projections.VisitQuantityProjectionImpl;
 import com.holzhausen.MedHelper.model.services.AdminPanelService;
 import com.holzhausen.MedHelper.model.services.DataResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +124,12 @@ public class AdminPanelController {
     public boolean reserveVisits(@RequestBody VisitSearchDetail visitSearchDetail){
         adminPanelService.saveNewVisits(visitSearchDetail);
         return true;
+    }
+
+    @GetMapping(value = "/lastWeekVisitStats")
+    @ResponseBody
+    public List<VisitQuantityProjectionImpl> getLastWeekVisitStats(){
+        return adminPanelService.getWeekVisitStats();
     }
 
 

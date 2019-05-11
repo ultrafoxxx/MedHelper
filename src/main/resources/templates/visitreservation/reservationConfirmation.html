@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>MedHelper</title>
@@ -43,9 +44,8 @@
     </div>
 </nav>
 
-<!-- As a heading -->
 <nav class="navbar navbar-expand-lg background-color:#CCFF99">
-    <span class="navbar-brand mb-0 h1 mx-auto">Statystyki</span>
+    <span class="navbar-brand mb-0 h1 mx-auto">Wyszukiwanie pacjenta</span>
 </nav>
 
 <div class="row">
@@ -53,29 +53,37 @@
         <div class="list-group sticky-top">
             <a class="list-group-item text-light bg-success">Menu</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
-            <a class="list-group-item list-group-item-action  border-success" th:href="@{/adminPanel/addData}">Wprowadź dane seryjne</a>
-            <a class="list-group-item list-group-item-action  border-success" th:href="@{/adminPanel/findDoctor}">
-                Dodaj wizyty
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Przychodnie</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/register}"
+               sec:authorize="hasAuthority('Recepcjonista')">
+                Rejestracja pacjenta
             </a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/patientPanel}"
+               sec:authorize="hasAuthority('Pacjent')">
+                Moje dane
+            </a>
+            <a class="list-group-item list-group-item-action  border-success"
+               th:href="@{/receptionistPanel/findPatient}" sec:authorize="hasAuthority('Recepcjonista')">
+                Panel recepcjonisty
+            </a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/adminPanel}"
+               sec:authorize="hasAuthority('Administrator')">Panel administracyjny</a>
+            <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
         </div>
     </div>
+    <div class="col-9">
 
-
-    <div class="col-7">
-        <div class="shadow-sm p-3 mb-5 bg-white rounded">
-            <canvas id="myChart"></canvas>
+        <div class="shadow-sm p-3 mb-5 bg-white rounded" style="margin-top: 150px;">
+            <div style="text-align: center;font-size: 30px">Zarezerwowano wizytę</div>
+            <a class="btn btn-success" th:href="@{/}" role="button" style="width: 60%; margin-left: 20%;">Wróć do strony głównej</a>
         </div>
+
 
     </div>
 </div>
 
 
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script th:src="@{/js/jquery-3.3.1.js}"></script>
-<script th:src="@{/js/Chart.js}"></script>
-<script th:src="@{/js/myCharts.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>

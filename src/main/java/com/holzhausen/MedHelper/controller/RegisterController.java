@@ -25,6 +25,11 @@ public class RegisterController {
         this.service = service;
     }
 
+    /**
+     * Aby można było wypełnić formularz, do widoku należy przesłać pusty obiekt, który zawiera zmienne odpowiadające
+     * polom formularza.
+     * @return
+     */
     @GetMapping(value = "")
     public ModelAndView registerSite(){
         ModelAndView modelAndView = new ModelAndView();
@@ -34,6 +39,15 @@ public class RegisterController {
         return modelAndView;
     }
 
+    /**
+     * W przypadku wysyłania formularzy, które walidujemy, w kontrolerze na wejściu trzeba pobrać wypełnione dane
+     * z adnotacją @Valid, a także obiekt BindingResult, tak jak widać.
+     * W kontrolerze można przeprowadzić dodatkową walidację, niż tą zdefiniowaną w obiekcie Pacjent (pierwszy if)
+     * a następnie jeżeli wystąpiły problemy z walidacją to drugi if, jeżeli nie to else.
+     * @param pacjent
+     * @param bindingResult
+     * @return
+     */
     @PostMapping(value = "")
     public ModelAndView register(@Valid Pacjent pacjent, BindingResult bindingResult){
         ModelAndView modelAndView = new ModelAndView();

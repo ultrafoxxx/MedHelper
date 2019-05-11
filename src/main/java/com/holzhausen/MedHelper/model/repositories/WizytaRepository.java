@@ -1,10 +1,7 @@
 package com.holzhausen.MedHelper.model.repositories;
 
 import com.holzhausen.MedHelper.model.entities.Wizyta;
-import com.holzhausen.MedHelper.model.projections.OccupiedVisitsProjection;
-import com.holzhausen.MedHelper.model.projections.ReserveVisitItemProjection;
-import com.holzhausen.MedHelper.model.projections.TimeVisistsProjection;
-import com.holzhausen.MedHelper.model.projections.WizytaProjection;
+import com.holzhausen.MedHelper.model.projections.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,15 +10,49 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * Interfejs repozytorium powinien być zaadnotowany @Repository i rozszarzać interfejs JpaRepository.
+ * Dla każdej encji powinno istnieć tylko jedno repozytorium.
+ */
 @Repository
 public interface WizytaRepository extends JpaRepository<Wizyta, Integer> {
 
+    /**
+     * Zapisywanie encji do bazy musi być o takiej strukturze jak tu widać
+     * @param wizyta
+     * @return
+     */
     Wizyta save(Wizyta wizyta);
 
+    /**
+     * Usuwanie z bazy na podstawie id
+     * @param id
+     */
     void deleteById(int id);
 
+    /**
+     * Szukanie wizyt na podstawie id.
+     * @param id
+     * @return
+     */
     Wizyta findById(int id);
 
+    /**
+     * W przypadku chęci użycia zapytania SQL, należy dodać widoczną poniżej adnotację. Jeżeli metoda ma zwracać
+     * obiekt, który obsługuje to repozytorium (w tym przypadku obiekt Wizyta), to w zapytaniu należy dać SELECT *,
+     * natomiast, jeżeli nie chce się pobierać wszystkich danych albo w zapytaniu znajduje się JOIN, najlepszym
+     * rozwiązaniem jest stworzenie interfejsu, który będzie działał na zasadzie projekcji. W tym przypadku pobieram
+     * dane za pomocą interfejsu OccupiedVisitsProjection, który zawiera deklaracje metod getTime() i getDurationTime().
+     * Oznacza, to że należy w zapytaniu zrobić projekcję na dwie kolumny, a następnie nadać tej kolumnie alias, jak widać poniżej
+     * czas_trwania AS durationTime. Alias musi odpowiadać metodzie w interfejsie, w taki sposób, że jeżeli jest np.
+     * w interfejsie getLollipop, to w aliasie odejmujemy get i pierwszą literę zamieniamy na małą, otrzymując lollipop.
+     * Jeżeli w zapytaniu chcemy użyć jakichś zmiennych, które zostały wczytane na wejściu musimy oznaczyć je jako @Param
+     * tak jak widać poniżej.
+     * @param doctorId
+     * @param date
+     * @param gabinetId
+     * @return
+     */
     @Query(nativeQuery = true, value = "SELECT time AS time, czas_trwania AS durationTime " +
                                         "FROM wizyta " +
                                         "WHERE data=:date AND (lekarz_id=:doctorId OR gabinet_lekarski_id=:gabinetId) " +
@@ -73,4 +104,12 @@ public interface WizytaRepository extends JpaRepository<Wizyta, Integer> {
                                         "ON SL.specjalnosc_id = S.id " +
                                         "WHERE W.id = :visitId")
     WizytaProjection getVisitGivenId(@Param("visitId") int visitId);
+
+    @Query(nativeQuery = true, value = "SELECT data AS visitDate, COUNT(*) AS quantity " +
+                                        "FROM wizyta " +
+                                        "WHERE DATEDIFF(NOW(), data)>0 AND DATEDIFF(NOW(), data)<=7 " +
+                                        "GROUP BY data " +
+                                        "ORDER BY data")
+    List<VisitQuantityProjection> getWeekVisitStats();
+
 }

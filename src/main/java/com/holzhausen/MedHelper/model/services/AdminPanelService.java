@@ -15,9 +15,12 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -171,6 +174,25 @@ public class AdminPanelService {
             wizyta.setTime(Time.valueOf(visitTime));
             wizytaRepository.save(wizyta);
         }
+    }
+
+    public List<VisitQuantityProjectionImpl> getWeekVisitStats(){
+
+        List<VisitQuantityProjection> lastWeekVisits = wizytaRepository.getWeekVisitStats();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -7);
+        List<VisitQuantityProjectionImpl> result = new ArrayList<>();
+        for(int i=0;i<7;i++){
+            VisitQuantityProjectionImpl visitQuantity = new VisitQuantityProjectionImpl();
+            Date date = new Date(calendar.getTime().getTime());
+            visitQuantity.setDate(date);
+            if(!lastWeekVisits.isEmpty() && lastWeekVisits.get(0).getVisitDate().toString().equals(date.toString())){
+                visitQuantity.setQuantity(lastWeekVisits.remove(0).getQuantity());
+            }
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            result.add(visitQuantity);
+        }
+        return result;
     }
 
     private Time getTranslatedTime(String[] time){

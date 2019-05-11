@@ -54,9 +54,18 @@
     </div>
     <div class="col" style="margin-top: 30px;">
         <div class="shadow-sm p-3 mb-5 bg-white rounded" id="findPlace">
+            <!-- Link powinien wyglądać jak wiadć poniżej w th:action, musi zawierać prefix @ i ścieżka względna do
+                 odpowiedniego kontrolera
+                 Obiekt formularza odnosi się do obiektu, który wysłaliśmy w kontrolerze i chcemy go wypełnić.
+                 W przypadku obiektów jeżeli chcemy coś z nimi zrobić w widoku, musimy użyć prefixu $
+                 Jeżeli ten obiekt nie jest typu prostego np. int i zawiera jakieś pola, odwołujemy się do takiego pola,
+                 jakby było ono publiczne - obiekt.pole-->
             <form method="post" th:action="@{/register}" th:object="${pacjent}">
                 <div class="form-group myDiv">
                     <label for="inputImie">Imię</label>
+                    <!-- Aby przypisać odpowiednie pole obiektu z th:object do odpowiedniego inputa, należy użyć
+                    th:field z prefixem *. Natomiast jeżeli chcemy mieć informację walidacyjną z serwera, musi
+                    mieć ona strukturę taką jak label pod inputem.-->
                     <input type="text" class="form-control" id="inputImie" aria-describedby="cityHelp"
                            placeholder="Imię" th:field="*{imie}">
                     <label th:if="${#fields.hasErrors('imie')}" th:errors="*{imie}" class="validation-message"></label>

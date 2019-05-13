@@ -7,6 +7,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Time;
 import java.util.List;
 
@@ -20,9 +22,11 @@ public class Placowka {
     @Column(name = "id", nullable = false)
     private int id;
 
+    @NotEmpty(message = "Pole nie może być puste")
     @Column(name = "miasto", nullable = false)
     private String miasto;
 
+    @NotEmpty(message = "Pole nie może być puste")
     @Column(name = "adres", nullable = false)
     private String adres;
 
@@ -32,13 +36,14 @@ public class Placowka {
     @Column(name = "SzerGeo", nullable = false)
     private double szerGeo;
 
+    @NotEmpty(message = "Pole nie może być puste")
     @Column(name = "telefon", nullable = false)
     private String telefon;
 
-    @Column(name = "CzasOtwarcia", nullable = false)
+    @Column(name = "CzasOtwarcia")
     private Time czasOtwarcia;
 
-    @Column(name = "CzasZamkniecia", nullable = false)
+    @Column(name = "CzasZamkniecia")
     private Time czasZamkniecia;
 
     @JsonManagedReference

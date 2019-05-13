@@ -12,9 +12,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{/css/map.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/validation.css}">
 </head>
 
 <body style="background-color: #CCFF99">
@@ -24,13 +24,6 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" th:href="@{/map}">Przychodnie<span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-    </div>
     <div class="collapse navbar-collapse" id="navbarNav">
 
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
@@ -47,7 +40,7 @@
 </nav>
 
 <nav class="navbar navbar-expand-lg background-color:#CCFF99">
-    <span class="navbar-brand mb-0 h1 mx-auto">Zarezerwuj wizytę pacjentowi</span>
+    <span class="navbar-brand mb-0 h1 mx-auto">Usuwanie placówki</span>
 </nav>
 
 <div class="row">
@@ -56,63 +49,44 @@
             <a class="list-group-item text-light bg-success">Menu</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Przychodnie</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/addAgency}"
+               sec:authorize="hasAuthority('Administrator')">Dodaj przychodnię</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/addAgency/removeAgency}"
+               sec:authorize="hasAuthority('Administrator')">Usuń przychodnię</a>
             <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
         </div>
     </div>
     <div class="col" style="margin-top: 30px;">
         <div class="shadow-sm p-3 mb-5 bg-white rounded" id="findPlace">
-            <form>
-                <div>
-                    <label>
-                        Wybór specjalizacji
-                    </label>
-                    <select class="form-control col" onchange="changeFunction(this)" th:field="*{}">
-                        <option th:each="nazwa : ${}" th:text="${}" th:class="${}" th:value="${}"></option>
-                    </select>
-                </div>
-                <div class="form-group myDiv">
-                    <label for="inputDoctor">Lekarz</label>
-                    <input type="text" class="form-control" id="inputDoctor" placeholder="Nazwisko i imię">
-                    <div class="list-group inputhints" id="">
+            <!-- Link powinien wyglądać jak wiadć poniżej w th:action, musi zawierać prefix @ i ścieżka względna do
+     odpowiedniego kontrolera
+     Obiekt formularza odnosi się do obiektu, który wysłaliśmy w kontrolerze i chcemy go wypełnić.
+     W przypadku obiektów jeżeli chcemy coś z nimi zrobić w widoku, musimy użyć prefixu $
+     Jeżeli ten obiekt nie jest typu prostego np. int i zawiera jakieś pola, odwołujemy się do takiego pola,
+     jakby było ono publiczne - obiekt.pole-->
+            <table class="table table-bordered" style="margin-top: 30px">
+                <thead></thead>
+                <tbody>
+                <tr class="row" th:each="placowka : ${city}">
+                    <div class="dropdown-divider row">
                     </div>
-                </div>
-                <div class="form-group myDiv">
-                    <label for="inputPatient">Pacjent</label>
-                    <input type="text" class="form-control" id="inputPatient" placeholder="Pesel pacjenta">
-                    <div class="list-group inputhints" id="">
+                    <div class="row">
+                        <div class="col-9" th:text="${placowka.city} + ' ' + ${placowka.address}">
+                        </div>
+                        <form class="col-2" method="post" th:action="@{/addAgency/removeAgency}">
+                            <input type="hidden" th:value="${placowka.id}" name="agencyId">
+                            <button type="submit" class="btn btn-success">Usuń</button>
+                            <span style="color: greenyellow" th:utext="${successMessage}"></span>
+                        </form>
                     </div>
-                </div>
-                <div class="form-group myDiv">
-                    <label for="inputData3">Data od</label>
-                    <input type="text" class="form-control" id="inputData3" placeholder="Od">
-                </div>
-
-                <div class="form-group myDiv">
-                    <label for="inputData4">Data do</label>
-                    <input type="text" class="form-control" id="inputData4" placeholder="Do">
-                </div>
-                <button type="button" class="btn btn-success" id="look">Szukaj</button>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        </form>
+    </div>
+    <div class="col-2" style="margin-top: 30px;">
+        <div class="list-group sticky-top">
 
-        <div class="card border-success" style="margin-top:30px;">
-            <div class="card-header bg-success text-light border-success">25.04.2019</div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h6 class="card-title border-success">Konsultacja alergologa</h6>
-                        <p class="card-text">Dr Anna Zalewska</p>
-                    </div>
-                    <div class="col">
-                        <h4 class="card-title border-success" style="text-align: right;">17:45</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer bg-transparent border-success">
-                <div class="col">
-                    <button type="button" class="btn btn-success myChange" style="width: 100%">Zarezerwuj</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>

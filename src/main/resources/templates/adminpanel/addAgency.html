@@ -49,6 +49,10 @@
             <a class="list-group-item text-light bg-success">Menu</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Strona główna</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Przychodnie</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/addAgency}"
+               sec:authorize="hasAuthority('Administrator')">Dodaj przychodnię</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/addAgency/removeAgency}"
+               sec:authorize="hasAuthority('Administrator')">Usuń przychodnię</a>
             <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
         </div>
     </div>
@@ -68,6 +72,8 @@
                 mieć ona strukturę taką jak label pod inputem.-->
                     <input type="text" class="form-control" id="inputCity" aria-describedby="cityHelp"
                            placeholder="Miasto" th:field="*{miasto}">
+                    <label th:if="${#fields.hasErrors('miasto')}" th:errors="*{miasto}" class="validation-message"></label>
+
                 </div>
 
 
@@ -75,19 +81,25 @@
                     <label for="inputAddress">Adres</label>
                     <input type="text" class="form-control" id="inputAddress" placeholder="Adres"
                            th:field="*{adres}">
+                    <label th:if="${#fields.hasErrors('adres')}" th:errors="*{adres}" class="validation-message"></label>
+
                 </div>
 
                 <div class="form-group myDiv">
                     <label for="inputDlugosc">Dlugość geograficzna</label>
-                    <input type="text" class="form-control" id="inputDlugosc" placeholder="Długość geograficzna"
+                    <input type="number" class="form-control" id="inputDlugosc" placeholder="Długość geograficzna"
                            th:field="*{DlugoscGeo}">
+                    <label th:if="${#fields.hasErrors('DlugoscGeo')}" th:errors="*{DlugoscGeo}" class="validation-message"></label>
+
                 </div>
 
 
                 <div class="form-group myDiv">
                     <label for="inputSzer">Szerokość geograficzna</label>
-                    <input type="text" class="form-control" id="inputSzer" placeholder="Szerokość geograficzna"
+                    <input type="number" class="form-control" id="inputSzer" placeholder="Szerokość geograficzna"
                            th:field="*{SzerGeo}">
+                    <label th:if="${#fields.hasErrors('SzerGeo')}" th:errors="*{SzerGeo}" class="validation-message"></label>
+
                 </div>
 
 
@@ -95,19 +107,25 @@
                     <label for="inputTel">Telefon</label>
                     <input type="text" class="form-control" id="inputTel" placeholder="Telefon"
                            th:field="*{telefon}">
+                    <label th:if="${#fields.hasErrors('telefon')}" th:errors="*{telefon}" class="validation-message"></label>
+
                 </div>
 
 
                 <div class="form-group myDiv">
                     <label for="inputOtwarcie">Czas otwarcia</label>
-                    <input type="text" class="form-control" id="inputOtwarcie" placeholder="Godzina otwarcia"
+                    <input type="text" class="form-control" id="inputOtwarcie" placeholder="7:00:00"
                            th:field="*{CzasOtwarcia}">
+
+
                 </div>
 
                 <div class="form-group myDiv">
                     <label for="inputZamkniecie">Czas zamknięcia</label>
-                    <input type="text" class="form-control" id="inputZamkniecie" placeholder="Godzina zamknięcia"
+                    <input type="text" class="form-control" id="inputZamkniecie" placeholder="19:00:00"
                            th:field="*{CzasZamkniecia}">
+
+
                 </div>
 
                 <button type="submit" class="btn btn-success">Zatwierdź</button>

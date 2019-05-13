@@ -68,6 +68,10 @@
             sec:authorize="hasAuthority('Administrator')">Panel administracyjny</a>
             <a class="list-group-item list-group-item-action  border-success" th:href="@{/reserveVisit}">
                 Zarezerwuj wizytę</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/addAgency}"
+               sec:authorize="hasAuthority('Administrator')">Dodaj przychodnię</a>
+            <a class="list-group-item list-group-item-action  border-success" th:href="@{/addAgency/removeAgency}"
+            sec:authorize="hasAuthority('Administrator')">Usuń przychodnię</a>
             <a class="list-group-item list-group-item-action  border-success" href="#">Kontakt</a>
         </div>
     </div>

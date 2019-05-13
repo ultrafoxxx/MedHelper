@@ -31,10 +31,10 @@ public interface PlacowkaRepository extends JpaRepository<Placowka, Integer> {
                                                         " WHERE GL.id=:gabinetId)")
     Placowka getPlacowkaWhereISGivenRoom(@Param("gabinetId") int gabinetId);
 
-//    @Query(nativeQuery = true, value = "SELECT id AS id, CONCAT(miasto, ', ul. ', adres) AS fullName " +
-//                                        "FROM placowka " +
-//                                        "WHERE MATCH(miasto) AGAINST (:data IN BOOLEAN MODE)")
-//    List<AgencyProjection> findAgencies(@Param("miasto") String miasto);
+    @Query(nativeQuery = true, value = "SELECT id AS id, miasto AS city, adres AS address " +
+                                        "FROM placowka " +
+                                        "ORDER BY miasto, adres" )
+    List<AgencyProjection> findAgencies();
 
     Placowka save(Placowka placowka);
 

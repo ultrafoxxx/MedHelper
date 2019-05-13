@@ -33,7 +33,7 @@ public abstract class User implements Serializable {
     private int userId;
 
     @NotEmpty(message = "Pole nie może być puste")
-    @Size(max = 60, message = "Email może posiadać tylko 255 znaków")
+    @Size(max = 60, message = "Email może posiadać tylko 60 znaków")
     @Column(name = "email", unique = true, nullable = false, length = 60)
     private String email;
 

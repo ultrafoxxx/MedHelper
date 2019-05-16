@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -89,12 +90,19 @@ public class PatientPanelController {
     }
 
 
-//
-//    @GetMapping(value = "/getVisits")
-//    public ModelAndView getVisits(HttpSession session){
-//        ModelAndView view = new ModelAndView();
-//        view.setViewName("patientpanel/visits");
-//        return view;
-//    }
+
+    @GetMapping(value = "/getVisits")
+    public ModelAndView getVisits(HttpSession session){
+        ModelAndView view = new ModelAndView();
+        view.setViewName("patientpanel/visits");
+        view.addObject("visits", service.getVisits());
+        return view;
+    }
+
+    @PostMapping(value = "/visitResign")
+    public RedirectView submitDeletedVisit(@RequestParam(name = "visitId") int visitId){
+        service.resignVisit(visitId);
+        return new RedirectView("/patientPanel/getVisits");
+    }
 
 }

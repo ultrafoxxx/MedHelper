@@ -48,9 +48,9 @@
     <div class="row">
         <div class="col-2" style="margin-top: 30px;">
             <div class="list-group sticky-top">
-                <a class="list-group-item list-group-item-action  border-success" th:href="@{/}">Informacje
+                <a class="list-group-item list-group-item-action  border-success" th:href="@{/patientPanel}">Informacje
                     pacjentów</a>
-                <a class="list-group-item list-group-item-action  border-success" th:href="@{/map}">Wizyty</a>
+                <a class="list-group-item list-group-item-action  border-success" th:href="@{/patientPanel/getVisits}">Wizyty</a>
                 <a class="list-group-item list-group-item-action  border-success" th:href="@{/register}">
                     Recepty i zwolnienia
                 </a>
@@ -78,8 +78,10 @@
                         <td th:text="${visit.miasto}+', '+${visit.adres}"></td>
                         <td th:text="${visit.data}+' '+${visit.time}"></td>
                         <td>
-                            <button type="button" class="btn btn-success myChange" style="width: 100%"
-                                th:if="${visit.actual}" th:id="${visit.id}">Odwołaj</button>
+                            <form method="post" th:action="@{/patientPanel/visitResign}" th:if="${visit.actual}">
+                                <input type="hidden" th:value="${visit.id}" name="visitId">
+                                <button type="submit" class="btn btn-success myChange" style="width: 100%">Odwołaj</button>
+                            </form>
                         </td>
                     </tr>
                 
@@ -93,7 +95,6 @@
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script th:src="@{/js/jquery-3.3.1.js}"></script>
-        <script th:src="@{/js/visit.js}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>

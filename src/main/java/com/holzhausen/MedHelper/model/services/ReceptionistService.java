@@ -1,6 +1,7 @@
 package com.holzhausen.MedHelper.model.services;
 
 import com.holzhausen.MedHelper.model.entities.User;
+import com.holzhausen.MedHelper.model.entities.Wizyta;
 import com.holzhausen.MedHelper.model.formclasses.Credential;
 import com.holzhausen.MedHelper.model.repositories.UserRepository;
 import com.holzhausen.MedHelper.model.projections.WizytaProjection;
@@ -104,7 +105,11 @@ public class ReceptionistService {
         return translatedVisits;
     }
 
-    public void removeVisit(int visitId){
-        wizytaRepository.deleteById(visitId);
+    public void resignVisit(int visitId){
+
+        Wizyta visit = wizytaRepository.findById(visitId);
+        visit.setPacjent(null);
+        wizytaRepository.save(visit);
+
     }
 }

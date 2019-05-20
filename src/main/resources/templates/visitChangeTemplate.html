@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div style="background-color: #5cb85c">
+    <h1 style="color: whitesmoke; padding: 10px">Medhelper</h1>
+</div>
+<div>
+    <h2 style="text-align: center" th:text="'Nastąpiły zmiany w twojej wizycie dnia '+${date}+' o godzinie '+${time}"></h2>
+</div>
+<div style="margin-top: 50px;margin-left: 10px">Przykro nam ale twoja wizyta została zmieniona.</div>
+<div style="margin-left: 10px">Nowe szczegóły wizyty:</div>
+<div style="margin-left: 10px" th:text="'Przyjmie Pana/Panią dr. '+${doctor}"></div>
+<div style="margin-left: 10px" th:text="'Gabinet lekarski: '+${room}"></div>
+<div style="margin-left: 10px" th:text="'Placówka: '+${place}"></div>
+<div style="margin-left: 10px">Jeżeli Panu/Pani nie odpowiadają zmiany ustalone przez nas, ma Pan/Pani prawo odwołać
+swoją wizytę logując się w serwisie MedHelper lub dzwoniąc do jednej z naszych placówek.</div>
+<div style="margin-left: 10px; margin-top: 20px">Z poważaniem,</div>
+<div style="margin-left: 10px">Zespół MedHelper</div>
+
+</body>
+</html>

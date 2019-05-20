@@ -50,6 +50,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "ORDER BY U.nazwisko")
     List<LekarzProjection> getDoctors(Pageable pageable);
 
+    @Query(nativeQuery = true, value = "SELECT CONCAT(U.imie, ' ', U.nazwisko) AS name, U.user_id AS userId " +
+            "FROM user U JOIN specjalnosc_lekarz SL " +
+            "ON U.user_id = SL.lekarz_id JOIN specjalnosc S " +
+            "ON SL.specjalnosc_id = S.id " +
+            "ORDER BY U.nazwisko")
+    List<LekarzProjection> getAllDoctors();
+
     @Query(nativeQuery = true, value = "SELECT COUNT(*) " +
                                         "FROM user " +
                                         "WHERE rola='Lekarz'")

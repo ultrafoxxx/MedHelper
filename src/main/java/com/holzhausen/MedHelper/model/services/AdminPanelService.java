@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 
 import javax.persistence.EntityManager;
@@ -36,18 +38,25 @@ public class AdminPanelService {
     private PlacowkaRepository placowkaRepository;
     private GabinetLekarskiRepository gabinetLekarskiRepository;
     private WizytaRepository wizytaRepository;
+    private ReserveVisitService reserveVisitService;
+    private EmailService emailService;
+    private TemplateEngine engine;
 
     private EntityManager manager;
 
     @Autowired
     public AdminPanelService(UserRepository userRepository, PlacowkaRepository placowkaRepository,
                              GabinetLekarskiRepository gabinetLekarskiRepository, WizytaRepository wizytaRepository,
-                             EntityManager manager) {
+                             EntityManager manager, ReserveVisitService reserveVisitService, EmailService emailService,
+                             TemplateEngine engine) {
         this.userRepository = userRepository;
         this.placowkaRepository = placowkaRepository;
         this.gabinetLekarskiRepository = gabinetLekarskiRepository;
         this.wizytaRepository = wizytaRepository;
         this.manager = manager;
+        this.reserveVisitService = reserveVisitService;
+        this.emailService = emailService;
+        this.engine = engine;
     }
 
     public List<LekarzProjectionImpl> getDoctors(String data, int page){
@@ -193,6 +202,95 @@ public class AdminPanelService {
             result.add(visitQuantity);
         }
         return result;
+    }
+
+    public List<Specjalnosc> getSpecialties(){
+        return reserveVisitService.getSpecialties();
+    }
+
+    public List<ReserveVisitItemProjectionImpl> getDoctorsWithVisists(Date date, String placeName,String specialty){
+
+        List<ReserveVisitItemProjection> queryResult;
+        if(specialty.equals("default")){
+            queryResult = wizytaRepository.getDoctorsWithVisitsToChange(date, placeName+"*");
+        }
+        else {
+            queryResult = wizytaRepository.getDoctorsWithVisitsGivenSpecialtyToChange(date, placeName+"*",
+                    specialty);
+        }
+        List<ReserveVisitItemProjectionImpl> result = new ArrayList<>();
+        for(ReserveVisitItemProjection myResult : queryResult){
+
+            ReserveVisitItemProjectionImpl newItem = new ReserveVisitItemProjectionImpl();
+            newItem.setAddress(myResult.getAddress());
+            newItem.setCity(myResult.getCity());
+            newItem.setDoctorId(myResult.getDoctorId());
+            newItem.setFullName(myResult.getFullName());
+            newItem.setPlaceId(myResult.getPlaceId());
+            newItem.setSpecialty(myResult.getSpecialty());
+            result.add(newItem);
+        }
+        return result;
+    }
+
+    public List<TimeVisitsProjectionImpl> getDoctorVisits(Date date, int placeId, int doctorId){
+
+        List<TimeVisistsProjection> queryResult = wizytaRepository.getDoctorsVisitsToChange(date, placeId, doctorId);
+        List<TimeVisitsProjectionImpl> result = new ArrayList<>();
+        for(TimeVisistsProjection myResult : queryResult){
+            TimeVisitsProjectionImpl newItem = new TimeVisitsProjectionImpl();
+            newItem.setId(myResult.getId());
+            newItem.setTime(myResult.getTime());
+            result.add(newItem);
+        }
+        return result;
+    }
+
+    public WizytaProjectionImpl getVisitGivenId(int visitId){
+        return reserveVisitService.getVisitGivenId(visitId);
+    }
+
+    public List<RoomProjectionImpl> getRoomsFromVisit(int visitId){
+        List<RoomProjection> queryResult = gabinetLekarskiRepository.queryRoomsByVisit(visitId);
+        List<RoomProjectionImpl> myResult = new ArrayList<>();
+        for(RoomProjection result : queryResult){
+            RoomProjectionImpl room = new RoomProjectionImpl();
+            room.setNrSali(result.getNrSali());
+            room.setId(result.getId());
+            myResult.add(room);
+        }
+        System.out.println(queryResult.size());
+        return myResult;
+    }
+
+    public List<LekarzProjectionImpl> getDoctors(){
+        List<LekarzProjection> queryResult = userRepository.getAllDoctors();
+        List<LekarzProjectionImpl> myResult = new ArrayList<>();
+        for(LekarzProjection doctor : queryResult){
+            LekarzProjectionImpl myDoctor = new LekarzProjectionImpl();
+            myDoctor.setUserId(doctor.getUserId());
+            myDoctor.setName(doctor.getName());
+            myResult.add(myDoctor);
+        }
+        return myResult;
+    }
+
+    public void updateVisit(int visitId, int doctorId, int roomId){
+        Wizyta visit = wizytaRepository.findById(visitId);
+        visit.setLekarz((Lekarz)manager.getReference(User.class, doctorId));
+        visit.setGabinetLekarski(manager.getReference(GabinetLekarski.class, roomId));
+        visit = wizytaRepository.save(visit);
+        if(visit.getPacjent()!=null){
+            Context context = new Context();
+            context.setVariable("doctor", visit.getLekarz().getImie()+" "+visit.getLekarz().getNazwisko());
+            context.setVariable("room", visit.getGabinetLekarski().getNrSali());
+            context.setVariable("place", visit.getGabinetLekarski().getPlacowka().getMiasto()+", "+
+                    visit.getGabinetLekarski().getPlacowka().getAdres());
+            context.setVariable("date", visit.getData());
+            context.setVariable("time", visit.getTime());
+            String message = engine.process("visitChangeTemplate", context);
+            emailService.sendEmail(visit.getPacjent().getEmail(), "Zmiana danych twojej wizyty", message);
+        }
     }
 
     private Time getTranslatedTime(String[] time){

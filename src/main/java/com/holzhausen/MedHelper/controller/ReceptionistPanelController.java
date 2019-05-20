@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -113,11 +114,10 @@ public class ReceptionistPanelController {
         return view;
     }
 
-    @GetMapping(value = "/removeVisit")
-    @ResponseBody
-    public boolean removeVisit(@RequestParam("visitId") int visitId){
-        service.removeVisit(visitId);
-        return true;
+    @PostMapping(value = "/visitResign")
+    public RedirectView submitDeletedVisit(@RequestParam(name = "visitId") int visitId){
+        service.resignVisit(visitId);
+        return new RedirectView("/receptionistPanel/getVisits");
     }
 
 }

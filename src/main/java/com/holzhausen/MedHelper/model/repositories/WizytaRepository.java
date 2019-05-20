@@ -86,6 +86,32 @@ public interface WizytaRepository extends JpaRepository<Wizyta, Integer> {
             "(MATCH(P.miasto, P.adres) AGAINST (:placeName IN BOOLEAN MODE))")
     List<ReserveVisitItemProjection> getDoctorsWithVisits(@Param("date")Date date, @Param("placeName") String placeName);
 
+    @Query(nativeQuery = true, value = "SELECT DISTINCT S.name AS specialty, L.user_id AS doctorId, CONCAT(L.imie,' ',L.nazwisko) " +
+            "AS fullName, P.id AS placeId, P.miasto AS city, P.adres AS address " +
+            "FROM wizyta W JOIN user L " +
+            "ON W.lekarz_id = L.user_id JOIN specjalnosc_lekarz SL " +
+            "ON L.user_id = SL.lekarz_id JOIN specjalnosc S " +
+            "ON SL.specjalnosc_id = S.id JOIN gabinet_lekarski GL " +
+            "ON W.gabinet_lekarski_id = GL.id JOIN placowka P " +
+            "ON GL.placowka_id = P.id " +
+            "WHERE (MATCH(S.name) AGAINST (:specialty IN BOOLEAN MODE)) AND " +
+            "W.data=:date AND " +
+            "(MATCH(P.miasto, P.adres) AGAINST (:placeName IN BOOLEAN MODE))")
+    List<ReserveVisitItemProjection> getDoctorsWithVisitsGivenSpecialtyToChange(@Param("date")Date date, @Param("placeName") String placeName,
+                                                                        @Param("specialty") String specialty);
+
+    @Query(nativeQuery = true, value = "SELECT DISTINCT S.name AS specialty, L.user_id AS doctorId, CONCAT(L.imie,' ',L.nazwisko) " +
+            "AS fullName, P.id AS placeId, P.miasto AS city, P.adres AS address " +
+            "FROM wizyta W JOIN user L " +
+            "ON W.lekarz_id = L.user_id JOIN specjalnosc_lekarz SL " +
+            "ON L.user_id = SL.lekarz_id JOIN specjalnosc S " +
+            "ON SL.specjalnosc_id = S.id JOIN gabinet_lekarski GL " +
+            "ON W.gabinet_lekarski_id = GL.id JOIN placowka P " +
+            "ON GL.placowka_id = P.id " +
+            "WHERE W.data=:date AND " +
+            "(MATCH(P.miasto, P.adres) AGAINST (:placeName IN BOOLEAN MODE))")
+    List<ReserveVisitItemProjection> getDoctorsWithVisitsToChange(@Param("date")Date date, @Param("placeName") String placeName);
+
     @Query(nativeQuery = true, value = "SELECT W.id AS id, W.time AS time " +
                                         "FROM wizyta W JOIN gabinet_lekarski GL " +
                                         "ON W.gabinet_lekarski_id = GL.id " +
@@ -93,6 +119,14 @@ public interface WizytaRepository extends JpaRepository<Wizyta, Integer> {
                                         "AND W.pacjent_id IS NULL")
     List<TimeVisistsProjection> getDoctorsVisits(@Param("date")Date date, @Param("placeId") int placeId,
                                                  @Param("doctorId") int doctorId);
+
+    @Query(nativeQuery = true, value = "SELECT W.id AS id, W.time AS time " +
+            "FROM wizyta W JOIN gabinet_lekarski GL " +
+            "ON W.gabinet_lekarski_id = GL.id " +
+            "WHERE W.data=:date AND W.lekarz_id=:doctorId AND GL.placowka_id = :placeId")
+    List<TimeVisistsProjection> getDoctorsVisitsToChange(@Param("date")Date date, @Param("placeId") int placeId,
+                                                 @Param("doctorId") int doctorId);
+
 
     @Query(nativeQuery = true, value = "SELECT S.name AS hello, L.imie AS imie, L.nazwisko AS nazwisko, GL.nr_sali AS nrSali, " +
                                         "P.miasto AS miasto, P.adres AS adres, W.data AS data, W.time AS time " +
@@ -105,11 +139,15 @@ public interface WizytaRepository extends JpaRepository<Wizyta, Integer> {
                                         "WHERE W.id = :visitId")
     WizytaProjection getVisitGivenId(@Param("visitId") int visitId);
 
+
+
     @Query(nativeQuery = true, value = "SELECT data AS visitDate, COUNT(*) AS quantity " +
                                         "FROM wizyta " +
                                         "WHERE DATEDIFF(NOW(), data)>0 AND DATEDIFF(NOW(), data)<=7 " +
                                         "GROUP BY data " +
                                         "ORDER BY data")
     List<VisitQuantityProjection> getWeekVisitStats();
+
+
 
 }

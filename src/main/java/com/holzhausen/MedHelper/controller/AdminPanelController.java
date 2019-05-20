@@ -2,11 +2,10 @@ package com.holzhausen.MedHelper.controller;
 
 import com.holzhausen.MedHelper.model.entities.GabinetLekarski;
 import com.holzhausen.MedHelper.model.entities.Lekarz;
+import com.holzhausen.MedHelper.model.entities.Specjalnosc;
+import com.holzhausen.MedHelper.model.formclasses.ReserveSearch;
 import com.holzhausen.MedHelper.model.formclasses.VisitSearchDetail;
-import com.holzhausen.MedHelper.model.projections.LekarzProjectionImpl;
-import com.holzhausen.MedHelper.model.projections.OccupiedVisitsProjectionImpl;
-import com.holzhausen.MedHelper.model.projections.PlaceProjectionImpl;
-import com.holzhausen.MedHelper.model.projections.VisitQuantityProjectionImpl;
+import com.holzhausen.MedHelper.model.projections.*;
 import com.holzhausen.MedHelper.model.services.AdminPanelService;
 import com.holzhausen.MedHelper.model.services.DataResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.IOException;
@@ -130,6 +130,44 @@ public class AdminPanelController {
     @ResponseBody
     public List<VisitQuantityProjectionImpl> getLastWeekVisitStats(){
         return adminPanelService.getWeekVisitStats();
+    }
+
+    @GetMapping(value = "/findVisits")
+    public ModelAndView reserveVisitPanel(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("adminpanel/findVisits");
+        List<Specjalnosc> specialties = adminPanelService.getSpecialties();
+        modelAndView.addObject("specialties", specialties);
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/getVisitItems")
+    @ResponseBody
+    public List<ReserveVisitItemProjectionImpl> getVisitItems(@RequestBody ReserveSearch search){
+        return adminPanelService.getDoctorsWithVisists(search.getDate(),search.getPlaceName(),search.getSpecialty());
+    }
+
+    @PostMapping(value = "/getVisitTimes")
+    @ResponseBody
+    public List<TimeVisitsProjectionImpl> getVisitTimes(@RequestBody ReserveSearch search){
+        return adminPanelService.getDoctorVisits(search.getDate(),search.getPlaceId(),search.getDoctorId());
+    }
+
+    @GetMapping(value = "/confirm")
+    public ModelAndView changeVisitInfoPanel(@RequestParam("visitId") int visitId){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("adminpanel/changeVisit");
+        modelAndView.addObject("visitId", visitId);
+        modelAndView.addObject("doctors", adminPanelService.getDoctors());
+        modelAndView.addObject("rooms", adminPanelService.getRoomsFromVisit(visitId));
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/confirm")
+    public RedirectView confirmVisitChanges(@RequestParam("visitId") int visitId, @RequestParam("roomId") int roomId,
+                                            @RequestParam("doctorId") int doctorId){
+        adminPanelService.updateVisit(visitId, doctorId, roomId);
+        return new RedirectView("/adminPanel/findVisits");
     }
 
 

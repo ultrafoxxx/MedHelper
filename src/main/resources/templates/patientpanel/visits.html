@@ -78,7 +78,11 @@
                         <td th:text="${visit.miasto}+', '+${visit.adres}"></td>
                         <td th:text="${visit.data}+' '+${visit.time}"></td>
                         <td>
-                            <form method="post" th:action="@{/patientPanel/visitResign}" th:if="${visit.actual}">
+                            <form method="post" th:action="@{/patientPanel/visitResign}" th:if="${visit.actual}" sec:authorize="hasAuthority('Pacjent')">
+                                <input type="hidden" th:value="${visit.id}" name="visitId">
+                                <button type="submit" class="btn btn-success myChange" style="width: 100%">Odwołaj</button>
+                            </form>
+                            <form method="post" th:action="@{/receptionistPanel/visitResign}" th:if="${visit.actual}" sec:authorize="hasAuthority('Recepcjonista')">
                                 <input type="hidden" th:value="${visit.id}" name="visitId">
                                 <button type="submit" class="btn btn-success myChange" style="width: 100%">Odwołaj</button>
                             </form>

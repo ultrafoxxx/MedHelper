@@ -3,11 +3,10 @@ package com.holzhausen.MedHelper.model.services;
 import com.holzhausen.MedHelper.model.entities.*;
 import com.holzhausen.MedHelper.model.formclasses.VisitSearchDetail;
 import com.holzhausen.MedHelper.model.projections.*;
-import com.holzhausen.MedHelper.model.repositories.GabinetLekarskiRepository;
-import com.holzhausen.MedHelper.model.repositories.PlacowkaRepository;
-import com.holzhausen.MedHelper.model.repositories.UserRepository;
-import com.holzhausen.MedHelper.model.repositories.WizytaRepository;
+import com.holzhausen.MedHelper.model.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,9 @@ public class AdminPanelService {
     private WizytaRepository wizytaRepository;
     private ReserveVisitService reserveVisitService;
     private EmailService emailService;
+    private LekRepository lekRepository;
     private TemplateEngine engine;
+    private SpecjalnoscRepository specjalnoscRepository;
 
     private EntityManager manager;
 
@@ -48,7 +49,7 @@ public class AdminPanelService {
     public AdminPanelService(UserRepository userRepository, PlacowkaRepository placowkaRepository,
                              GabinetLekarskiRepository gabinetLekarskiRepository, WizytaRepository wizytaRepository,
                              EntityManager manager, ReserveVisitService reserveVisitService, EmailService emailService,
-                             TemplateEngine engine) {
+                             TemplateEngine engine, LekRepository lekRepository, SpecjalnoscRepository specjalnoscRepository) {
         this.userRepository = userRepository;
         this.placowkaRepository = placowkaRepository;
         this.gabinetLekarskiRepository = gabinetLekarskiRepository;
@@ -57,6 +58,8 @@ public class AdminPanelService {
         this.reserveVisitService = reserveVisitService;
         this.emailService = emailService;
         this.engine = engine;
+        this.lekRepository = lekRepository;
+        this.specjalnoscRepository = specjalnoscRepository;
     }
 
     public List<LekarzProjectionImpl> getDoctors(String data, int page){
@@ -185,7 +188,9 @@ public class AdminPanelService {
         }
     }
 
+    @CachePut("myCache")
     public List<VisitQuantityProjectionImpl> getWeekVisitStats(){
+
 
         List<VisitQuantityProjection> lastWeekVisits = wizytaRepository.getWeekVisitStats();
         Calendar calendar = Calendar.getInstance();
@@ -200,6 +205,46 @@ public class AdminPanelService {
             }
             calendar.add(Calendar.DAY_OF_MONTH, 1);
             result.add(visitQuantity);
+        }
+        return result;
+    }
+
+
+    @CachePut("mySecondCache")
+    public List<LekarzProjectionImpl> getDoctorReserveStats(){
+        List<LekarzProjection> queryResult = userRepository.getDoctorReserveStats();
+        List<LekarzProjectionImpl> result = new ArrayList<>();
+        for(LekarzProjection doctor : queryResult){
+            LekarzProjectionImpl newDoctor = new LekarzProjectionImpl();
+            newDoctor.setName(doctor.getName());
+            newDoctor.setUserId(doctor.getUserId());
+            result.add(newDoctor);
+        }
+        return result;
+    }
+
+    @CachePut("myThirdCache")
+    public List<DrugProjectionImpl> getDrugStats(){
+        List<DrugProjection> queryResult = lekRepository.getDrugStatistics();
+        List<DrugProjectionImpl> result = new ArrayList<>();
+        for(DrugProjection drug : queryResult){
+            DrugProjectionImpl newDrug = new DrugProjectionImpl();
+            newDrug.setDrugCount(drug.getDrugCount());
+            newDrug.setDrugName(drug.getDrugName());
+            result.add(newDrug);
+        }
+        return result;
+    }
+
+    @CachePut("myFourthCache")
+    public List<SpecialtyProjectionImpl> getSpecialtyStats(){
+        List<SpecialtyProjection> queryResult = specjalnoscRepository.getSpecialtyStatistics();
+        List<SpecialtyProjectionImpl> result = new ArrayList<>();
+        for(SpecialtyProjection specialty : queryResult){
+            SpecialtyProjectionImpl newSpecialty = new SpecialtyProjectionImpl();
+            newSpecialty.setSpecialtyCount(specialty.getSpecialtyCount());
+            newSpecialty.setSpecialtyName(specialty.getSpecialtyName());
+            result.add(newSpecialty);
         }
         return result;
     }

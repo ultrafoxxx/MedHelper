@@ -88,4 +88,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "WHERE rola='Pacjent' AND MATCH(imie, nazwisko, pesel) AGAINST (:data IN BOOLEAN MODE)")
     int getNumberOfPatients(@Param(value = "data") String data);
 
+    @Query(nativeQuery = true, value = "SELECT CONCAT(U.imie, ' ', U.nazwisko) AS name, COUNT(*) AS userId " +
+                                        "FROM user U JOIN wizyta W " +
+                                        "ON U.user_id = W.lekarz_id " +
+                                        "WHERE W.pacjent_id IS NOT NULL " +
+                                        "GROUP BY U.nazwisko, U.imie " +
+                                        "HAVING COUNT(*)>0 " +
+                                        "ORDER BY userId DESC " +
+                                        "LIMIT 5")
+    List<LekarzProjection> getDoctorReserveStats();
+
 }

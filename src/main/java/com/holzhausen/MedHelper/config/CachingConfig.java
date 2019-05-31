@@ -12,7 +12,7 @@ public class CachingConfig {
 
     @Bean
     public CacheManager cacheManager(){
-        return new ConcurrentMapCacheManager("myCache");
+        return new ConcurrentMapCacheManager("myCache", "mySecondCache", "myThirdCache", "myFourthCache");
     }
 
 }

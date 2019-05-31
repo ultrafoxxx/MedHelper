@@ -62,11 +62,24 @@
     </div>
 
 
+
     <div class="col-7">
+        <form>
+            <div class="form-group">
+                <select class="form-control" id="chooseStat">
+                    <option value="1">Liczba wizyt w ostatnim tygodniu</option>
+                    <option value="2">Lekarze z największą liczbą zarezerwowanych wizyt</option>
+                    <option value="3">Najpopularniejsze wypisywane leki</option>
+                    <option value="4">Najbardziej oblegane specjalizacje lekarza</option>
+                </select>
+            </div>
+        </form>
         <div class="shadow-sm p-3 mb-5 bg-white rounded">
             <canvas id="myChart"></canvas>
         </div>
-
+        <form method="get" th:action="@{/adminPanel/updateCache}">
+            <button type="submit" class="btn btn-success">Uaktualnij dane</button>
+        </form>
     </div>
 </div>
 

@@ -9,6 +9,8 @@ import com.holzhausen.MedHelper.model.projections.*;
 import com.holzhausen.MedHelper.model.services.AdminPanelService;
 import com.holzhausen.MedHelper.model.services.DataResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,10 +128,61 @@ public class AdminPanelController {
         return true;
     }
 
+    @Cacheable("myCache")
     @GetMapping(value = "/lastWeekVisitStats")
     @ResponseBody
     public List<VisitQuantityProjectionImpl> getLastWeekVisitStats(){
+        try {
+            Thread.sleep(5000);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return adminPanelService.getWeekVisitStats();
+    }
+
+    @Cacheable("mySecondCache")
+    @GetMapping(value = "/doctorStats")
+    @ResponseBody
+    public List<LekarzProjectionImpl> getDoctorStats(){
+        try {
+            Thread.sleep(5000);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return adminPanelService.getDoctorReserveStats();
+    }
+
+    @Cacheable("myThirdCache")
+    @GetMapping(value = "/drugStats")
+    @ResponseBody
+    public List<DrugProjectionImpl> getDrugStats(){
+        try {
+            Thread.sleep(5000);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return adminPanelService.getDrugStats();
+    }
+
+    @Cacheable("myFourthCache")
+    @GetMapping(value = "/specialtyStats")
+    @ResponseBody
+    public List<SpecialtyProjectionImpl> getSpecialtyStats(){
+        try {
+            Thread.sleep(5000);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return adminPanelService.getSpecialtyStats();
+    }
+
+    @GetMapping(value = "/updateCache")
+    public RedirectView updateCache(){
+        adminPanelService.getWeekVisitStats();
+        adminPanelService.getDoctorReserveStats();
+        adminPanelService.getDrugStats();
+        adminPanelService.getSpecialtyStats();
+        return new RedirectView("/adminPanel");
     }
 
     @GetMapping(value = "/findVisits")

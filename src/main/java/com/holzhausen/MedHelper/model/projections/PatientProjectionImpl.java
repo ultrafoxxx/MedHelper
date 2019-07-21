@@ -6,6 +6,7 @@ public class PatientProjectionImpl implements PatientProjection {
     private String name;
     private String pesel;
     private String licenseNumber;
+    private String visitTime;
 
     @Override
     public int getId() {
@@ -25,6 +26,15 @@ public class PatientProjectionImpl implements PatientProjection {
     @Override
     public String getLicenseNumber() {
         return licenseNumber;
+    }
+
+    @Override
+    public String getVisitTime() {
+        return visitTime;
+    }
+
+    public void setVisitTime(String visitTime) {
+        this.visitTime = visitTime;
     }
 
     public void setId(int id) {

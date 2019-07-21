@@ -6,5 +6,6 @@ public interface PatientProjection {
     String getName();
     String getPesel();
     String getLicenseNumber();
+    String getVisitTime();
 
 }

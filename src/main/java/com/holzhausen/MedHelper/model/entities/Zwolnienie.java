@@ -21,7 +21,8 @@ public class Zwolnienie {
     @Column(name = "DataKon", nullable = false)
     private Date dataKon;
 
-    @Column(name = "PrzyczynaZwolnienia", nullable = false, length = 1000)
+    @Lob
+    @Column(name = "PrzyczynaZwolnienia", nullable = false)
     private String przyczynaZwolnienia;
 
     @OneToOne(optional=false, targetEntity=Wizyta.class, fetch= FetchType.LAZY)

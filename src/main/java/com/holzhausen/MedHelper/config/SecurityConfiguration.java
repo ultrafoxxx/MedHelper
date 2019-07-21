@@ -68,6 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/reserveVisit/getVisitTimes").permitAll()
                     .antMatchers("/reserveVisit/confirm").hasAnyAuthority("Pacjent", "Recepcjonista")
                     .antMatchers("/addAgency").hasAuthority("Administrator")
+                    .antMatchers("/doctorPanel").hasAuthority("Lekarz")
                     .anyRequest().authenticated().and().csrf()
                     .disable().formLogin()
                     .loginPage("/logowanie").failureUrl("/logowanie?error=true")

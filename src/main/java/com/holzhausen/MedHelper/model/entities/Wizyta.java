@@ -22,7 +22,8 @@ public class Wizyta {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "notka", length = 2000)
+    @Lob
+    @Column(name = "notka")
     private String notka;
 
     @Column(name = "data", nullable = false)
@@ -33,6 +34,9 @@ public class Wizyta {
 
     @Column(name = "czasTrwania", nullable = false)
     private int czasTrwania;
+
+    @Column(name = "czySieOdbyla")
+    private boolean czySieOdbyla = false;
 
     @JsonBackReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId",
@@ -155,5 +159,13 @@ public class Wizyta {
 
     public void setZwolnienie(Zwolnienie zwolnienie) {
         this.zwolnienie = zwolnienie;
+    }
+
+    public boolean isCzySieOdbyla() {
+        return czySieOdbyla;
+    }
+
+    public void setCzySieOdbyla(boolean czySieOdbyla) {
+        this.czySieOdbyla = czySieOdbyla;
     }
 }

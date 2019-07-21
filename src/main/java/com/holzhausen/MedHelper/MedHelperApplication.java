@@ -14,6 +14,7 @@ public class MedHelperApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(MedHelperApplication.class, args);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		System.out.println(encoder.encode("Qwerty123"));
 
 	}
 

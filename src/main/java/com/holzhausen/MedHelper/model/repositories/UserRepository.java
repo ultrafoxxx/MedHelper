@@ -98,4 +98,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                                         "LIMIT 5")
     List<LekarzProjection> getDoctorReserveStats();
 
+    @Query(nativeQuery = true, value = "SELECT CONCAT(U.imie, ' ',U.nazwisko) AS name, W.id AS id, U.pesel AS pesel, W.time AS visitTime " +
+                                        "FROM wizyta W JOIN user U " +
+                                        "ON W.pacjent_id = U.user_id " +
+                                        "WHERE W.lekarz_id=:doctorId AND DATEDIFF(NOW(), W.data)=0 AND W.czy_sie_odbyla=0 " +
+                                        "ORDER BY visitTime")
+    List<PatientProjection> getPatientsForVisits(@Param("doctorId") int doctorId);
+
+    @Query(nativeQuery = true, value = "SELECT CONCAT(U.imie, ' ',U.nazwisko) AS name, W.id AS id, U.pesel AS pesel " +
+            "FROM wizyta W JOIN user U " +
+            "ON W.pacjent_id = U.user_id " +
+            "WHERE W.id=:visitId")
+    PatientProjection getPatientForVisit(@Param("visitId") int visitId);
+
 }

@@ -4,6 +4,7 @@ import com.holzhausen.MedHelper.model.entities.Lek;
 import com.holzhausen.MedHelper.model.projections.DrugProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,5 +22,10 @@ public interface LekRepository extends JpaRepository<Lek, Integer> {
                                         "ORDER BY drugCount DESC " +
                                         "LIMIT 5")
     List<DrugProjection> getDrugStatistics();
+
+    @Query(nativeQuery = true, value = "SELECT * " +
+            "FROM lek " +
+            "WHERE MATCH(nazwa, forma) AGAINST (:data IN BOOLEAN MODE)")
+    List<Lek> getDrugsByData(@Param("data") String data);
 
 }

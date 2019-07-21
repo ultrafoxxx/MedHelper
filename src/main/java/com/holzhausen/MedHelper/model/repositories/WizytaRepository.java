@@ -1,5 +1,6 @@
 package com.holzhausen.MedHelper.model.repositories;
 
+import com.holzhausen.MedHelper.model.entities.Pacjent;
 import com.holzhausen.MedHelper.model.entities.Wizyta;
 import com.holzhausen.MedHelper.model.projections.*;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -148,6 +149,9 @@ public interface WizytaRepository extends JpaRepository<Wizyta, Integer> {
                                         "ORDER BY data")
     List<VisitQuantityProjection> getWeekVisitStats();
 
-
+    @Query(nativeQuery = true, value = "SELECT * " +
+            "FROM wizyta " +
+            "WHERE czy_sie_odbyla=true AND pacjent_id=:patientId")
+    List<Wizyta> getPreviousVisit(@Param("patientId") int patientId);
 
 }

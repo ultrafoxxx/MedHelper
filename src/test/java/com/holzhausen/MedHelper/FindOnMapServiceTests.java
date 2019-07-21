@@ -101,7 +101,7 @@ public class FindOnMapServiceTests {
     public void pobieranieMiastWroP(){
         List<String> otrzymane=findOnMapService.getPlacesWithCityAndAddressCotaining("Wrocław", "p");
         List<String> przewidywane = new ArrayList<>();
-        przewidywane.add("Ptysiowa 20");
+        przewidywane.add("ptysiowa 20");
 
         Assert.assertEquals(przewidywane,otrzymane);
     }
